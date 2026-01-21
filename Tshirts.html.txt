@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>T-Shirts Collection</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="tshirts.html">T-Shirts</a>
+    <a href="accessories.html">Accessories</a>
+  </nav>
+
+  <h1>T-Shirts Collection</h1>
+
+  <div class="products">
+    <div class="product">
+      <img src="images/tshirts/placeholder.jpg" alt="Sample T-Shirt">
+      <p>Sample T-Shirt</p>
+      <p>₹799</p>
+    </div>
+  </div>
+</body>
+</html>
