@@ -1,141 +1,50 @@
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #fdfbfb, #ebedee);
-  color: #222;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>things.in - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-/* NAVBAR */
-nav {
-  backdrop-filter: blur(10px);
-  background: rgba(0, 0, 0, 0.7);
-  padding: 18px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-nav a {
-  color: white;
-  text-decoration: none;
-  margin-left: 25px;
-  font-weight: 500;
-  transition: 0.3s;
-}
+  <link rel="stylesheet" href="css/style.css?v=1">
+</head>
+<body>
 
-nav a:hover {
-  color: #ff4d6d;
-}
+<!-- NAVBAR -->
+<nav>
+  <div class="brand">🛍️ things.in</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="apparels.html">Apparels</a>
+    <a href="accessories.html">Accessories</a>
+  </div>
+</nav>
 
-/* HERO */
-.hero {
-  text-align: center;
-  padding: 100px 20px;
-  background: linear-gradient(120deg, #1a1a1a, #2f2f2f);
-  color: white;
-  position: relative;
-}
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Welcome to things.in</h1>
+    <p>Your one-stop shop for stylish Apparels & Accessories</p>
+    <a href="apparels.html" class="cta-btn">Shop Now</a>
+  </div>
+</section>
 
-.hero h1 {
-  font-size: 48px;
-  margin-bottom: 10px;
-  text-shadow: 0 0 20px rgba(255,77,109,0.6);
-}
+<!-- CATEGORIES -->
+<section class="categories">
+  <a href="apparels.html" class="category-card">
+    <img src="images/apparels/placeholder.jpg" alt="Apparels">
+    <p>Apparels</p>
+  </a>
 
-.hero p {
-  color: #ccc;
-  font-size: 18px;
-}
+  <a href="accessories.html" class="category-card">
+    <img src="images/accessories/placeholder.jpg" alt="Accessories">
+    <p>Accessories</p>
+  </a>
+</section>
 
-/* CATEGORY CARDS */
-.categories {
-  display: flex;
-  justify-content: center;
-  gap: 50px;
-  padding: 70px 20px;
-  flex-wrap: wrap;
-}
-
-.categories a {
-  text-align: center;
-  text-decoration: none;
-  color: #111;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.categories img {
-  width: 280px;
-  height: 280px;
-  object-fit: cover;
-  border-radius: 18px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-}
-
-.categories a:hover {
-  transform: translateY(-10px);
-}
-
-/* PRODUCTS GRID */
-.products {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 35px;
-  padding: 70px 50px;
-}
-
-/* PRODUCT CARD */
-.card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  border-radius: 18px;
-  padding: 22px;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 25px 50px rgba(0,0,0,0.12);
-}
-
-.card img {
-  width: 100%;
-  height: 240px;
-  object-fit: cover;
-  border-radius: 14px;
-}
-
-.card h3 {
-  margin: 12px 0 6px;
-}
-
-.card p {
-  font-weight: bold;
-  color: #ff4d6d;
-}
-
-/* BUTTON */
-button {
-  margin-top: 12px;
-  padding: 10px 20px;
-  border: none;
-  background: linear-gradient(45deg, #ff4d6d, #ff758f);
-  color: white;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
-  transform: scale(1.05);
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-  .hero h1 { font-size: 34px; }
-  nav { flex-direction: column; gap: 10px; }
-}
+</body>
+</html>
