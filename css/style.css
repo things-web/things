@@ -158,3 +158,52 @@ footer {
     gap: 10px;
   }
 }
+/* ========== PAGE FADE IN ========== */
+body {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== CARD HOVER LIFT ========== */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.15);
+}
+
+/* ========== IMAGE ZOOM ON HOVER ========== */
+.card img {
+  transition: transform 0.4s ease;
+}
+
+.card:hover img {
+  transform: scale(1.08);
+}
+
+/* ========== BUTTON GLOW ========== */
+button:hover, .cta-btn:hover {
+  box-shadow: 0 0 15px rgba(255,77,109,0.6);
+}
+
+/* ========== CATEGORY CARD HOVER EFFECT ========== */
+.category-card img {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.category-card:hover img {
+  transform: scale(1.07);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+/* ========== SMOOTH SCROLL ========== */
+html {
+  scroll-behavior: smooth;
+}
+
