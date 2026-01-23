@@ -1,74 +1,58 @@
 /* GENERAL */
-body {
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  background: linear-gradient(135deg,#fdfbfb,#ebedee);
-  color: #222;
-  line-height: 1.6;
-}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family: 'Poppins', sans-serif; background:linear-gradient(135deg,#fdfbfb,#ebedee); color:#222; line-height:1.6; }
 
 /* NAVBAR */
 nav {
-  display: flex;
-  justify-content: space-between;
-  padding: 18px 50px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 50px;
   background: rgba(0,0,0,0.75);
   backdrop-filter: blur(10px);
-  position: sticky;
-  top: 0;
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
-nav .brand { color: #fff; font-weight: 600; }
-nav .nav-links a { color: #fff; text-decoration: none; margin-left: 25px; transition: 0.3s; }
-nav .nav-links a:hover { color: #ff4d6d; }
+nav .brand { color:#fff; font-weight:600; font-size:22px; }
+nav .nav-links a { color:#fff; text-decoration:none; margin-left:25px; font-weight:500; transition:0.3s; }
+nav .nav-links a:hover { color:#ff4d6d; }
 
 /* HERO */
-.hero {
-  text-align: center;
-  padding: 120px 20px;
-  background: linear-gradient(120deg,#1a1a1a,#2f2f2f);
-  color: white;
-}
-.hero h1 { font-size: 48px; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,77,109,0.6); }
-.hero p { font-size: 18px; color: #ccc; }
+.hero { text-align:center; padding:120px 20px; background:linear-gradient(120deg,#1a1a1a,#2f2f2f); color:white; position:relative; }
+.hero.small-hero { padding:80px 20px; }
+.hero h1 { font-size:48px; text-shadow:0 0 20px rgba(255,77,109,0.6); margin-bottom:10px; }
+.hero p { font-size:18px; color:#ccc; margin-bottom:20px; }
+.cta-btn { display:inline-block; padding:12px 28px; background:linear-gradient(45deg,#ff4d6d,#ff758f); color:white; font-weight:600; border-radius:10px; text-decoration:none; transition:0.3s; }
+.cta-btn:hover { transform:scale(1.05); box-shadow:0 8px 20px rgba(255,77,109,0.4); }
 
 /* CATEGORIES */
-.categories {
-  display: flex;
-  justify-content: center;
-  gap: 50px;
-  flex-wrap: wrap;
-  padding: 60px 20px;
-}
-.category-card {
-  text-align: center;
-  text-decoration: none;
-  color: #111;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.category-card img {
-  width: 280px;
-  height: 280px;
-  object-fit: cover;
-  border-radius: 18px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-  transition: transform 0.4s, box-shadow 0.4s;
-}
-.category-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.15);
-}
-.category-card p { margin-top: 12px; font-weight: 600; font-size: 18px; }
+.categories { display:flex; justify-content:center; gap:50px; flex-wrap:wrap; padding:60px 20px; }
+.category-card { text-align:center; text-decoration:none; color:#111; transition:0.3s; }
+.category-card img { width:280px; height:280px; object-fit:cover; border-radius:18px; box-shadow:0 20px 40px rgba(0,0,0,0.12); transition:0.4s; }
+.category-card:hover { transform:translateY(-10px); box-shadow:0 30px 60px rgba(0,0,0,0.15); }
+.category-card p { margin-top:12px; font-weight:600; font-size:18px; }
+
+/* PRODUCTS */
+.products { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:35px; padding:70px 50px; }
+.card { background:rgba(255,255,255,0.7); backdrop-filter:blur(12px); border-radius:18px; padding:22px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.08); transition:0.4s; }
+.card:hover { transform:translateY(-12px); box-shadow:0 25px 50px rgba(0,0,0,0.12); }
+.card img { width:100%; height:240px; object-fit:cover; border-radius:14px; transition:0.4s; }
+.card h3 { margin:12px 0 6px; }
+.card p { font-weight:bold; color:#ff4d6d; }
+button { margin-top:12px; padding:10px 20px; border:none; background:linear-gradient(45deg,#ff4d6d,#ff758f); color:white; border-radius:10px; cursor:pointer; font-weight:600; transition:0.3s; }
+button:hover { transform:scale(1.05); box-shadow:0 8px 20px rgba(255,77,109,0.4); }
 
 /* FOOTER */
-footer {
-  background: #1a1a1a;
-  color: #fff;
-  padding: 40px 20px;
-  text-align: center;
-}
+footer { background:#1a1a1a; color:white; padding:40px 20px; text-align:center; }
+footer .socials { margin-top:15px; }
+footer .socials a { color:white; margin:0 12px; text-decoration:none; font-size:20px; transition:0.3s; }
+footer .socials a:hover { color:#ff4d6d; transform:scale(1.2); }
 
 /* RESPONSIVE */
 @media(max-width:768px){
   .hero h1{font-size:34px;}
   .categories img{width:200px;height:200px;}
+  .card img{height:200px;}
+  nav{flex-direction:column; gap:10px;}
 }
