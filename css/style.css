@@ -1,108 +1,68 @@
-* { margin:0; padding:0; box-sizing:border-box; }
+<canvas id="starryCanvas"></canvas>
 
-body {
-  font-family: 'Poppins', sans-serif;
-  color:white;
-  min-height:100vh;
-  background:
-    radial-gradient(circle at 70% 20%, rgba(255,210,0,0.3), transparent 40%),
-    radial-gradient(circle at 20% 40%, rgba(255,200,0,0.2), transparent 45%),
-    linear-gradient(160deg,#0a1a3a,#102a54,#0a1630);
-  overflow-x:hidden;
+<script>
+const canvas = document.getElementById('starryCanvas');
+const ctx = canvas.getContext('2d');
+
+// Make canvas full screen
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Handle resizing
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+// Star setup
+const stars = [];
+const numStars = 200;
+
+for (let i = 0; i < numStars; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height, // full height
+    radius: Math.random() * 2 + 1,
+    speed: Math.random() * 0.5 + 0.2
+  });
 }
 
-/* NAV */
-nav {
-  display:flex;
-  justify-content:space-between;
-  padding:18px 8%;
-  background:rgba(5,10,30,0.6);
-  backdrop-filter:blur(10px);
+// Animation loop
+function animate() {
+  ctx.fillStyle = 'rgba(10, 10, 30, 0.9)'; // night sky background
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  stars.forEach(star => {
+    // Draw star
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+    ctx.fillStyle = 'white';
+    ctx.fill();
+
+    // Move star upward
+    star.y -= star.speed;
+
+    // Respawn at bottom when off top
+    if (star.y < 0) {
+      star.y = canvas.height;
+      star.x = Math.random() * canvas.width;
+    }
+  });
+
+  requestAnimationFrame(animate);
 }
 
-nav a {
-  color:#ffd34d;
-  margin-left:20px;
-  text-decoration:none;
+// Start animation
+animate();
+</script>
+
+<style>
+#starryCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /* full viewport height */
+  z-index: -1; /* stay behind content */
 }
-
-.logo { font-weight:700; font-size:22px; }
-
-/* HERO */
-.hero { text-align:center; padding:110px 20px; }
-.hero.small { padding:70px 20px; }
-
-.hero h1 {
-  font-size:48px;
-  color:#ffd34d;
-  text-shadow:0 0 20px #ffcc00;
-}
-
-/* CATEGORIES */
-.categories {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:40px;
-  padding:60px 8%;
-}
-
-.category-card {
-  text-align:center;
-  text-decoration:none;
-  color:white;
-}
-
-.category-card img {
-  width:100%;
-  aspect-ratio:1/1;
-  object-fit:cover;
-  border-radius:15px;
-}
-
-/* PRODUCTS */
-.products {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:40px;
-  padding:60px 8%;
-}
-
-.card {
-  background:rgba(15,25,60,0.6);
-  backdrop-filter:blur(10px);
-  padding:20px;
-  border-radius:16px;
-  text-align:center;
-}
-
-.card img {
-  width:100%;
-  height:260px;
-  object-fit:cover;
-  border-radius:12px;
-}
-
-button {
-  margin-top:10px;
-  padding:10px 20px;
-  border:none;
-  border-radius:8px;
-  background:#ffd34d;
-  font-weight:600;
-}
-
-/* STARS */
-.stars span {
-  position:absolute;
-  width:4px;
-  height:4px;
-  background:#ffd34d;
-  border-radius:50%;
-  box-shadow:0 0 10px #ffd34d;
-  animation:float 20s linear infinite;
-}
-
-@keyframes float {
-  from { transform:translateY(100vh); }
-  to { transform:translateY(-10vh); }
-}
+</style>
