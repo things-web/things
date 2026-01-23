@@ -1,16 +1,21 @@
-* {
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+/* ===== RESET ===== */
+* { margin:0; padding:0; box-sizing:border-box; }
 
+/* ===== BODY + BACKGROUND ===== */
 body {
   font-family: 'Poppins', sans-serif;
   color:white;
   background: radial-gradient(circle at 30% 40%, #1b2a49, #0d1b2a 70%);
+  min-height:100vh;
+  animation: fadeIn 1s ease-in-out;
 }
 
-/* NAV */
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(10px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+/* ===== NAVBAR ===== */
 nav {
   display:flex;
   justify-content:space-between;
@@ -33,15 +38,15 @@ nav a {
   font-weight:500;
 }
 
-nav a:hover {
-  color:#ffb703;
-}
+nav a:hover { color:#ffb703; }
 
-/* HERO */
+/* ===== HERO ===== */
 .hero {
   text-align:center;
   padding:140px 20px;
 }
+
+.small-hero { padding:80px 20px; }
 
 .hero h1 {
   font-family:'Playfair Display', serif;
@@ -50,12 +55,9 @@ nav a:hover {
   text-shadow:0 0 20px #ffb703;
 }
 
-.hero p {
-  margin-top:10px;
-  color:#d6d6d6;
-}
+.hero p { margin-top:10px; color:#d6d6d6; }
 
-/* CATEGORY SECTION */
+/* ===== CATEGORY CARDS ===== */
 .categories {
   display:flex;
   justify-content:center;
@@ -78,7 +80,12 @@ nav a:hover {
   transform:scale(1.1) rotate(-3deg);
 }
 
-/* PRODUCTS */
+.category-card p {
+  margin-top:10px;
+  font-weight:bold;
+}
+
+/* ===== PRODUCTS ===== */
 .products {
   display:flex;
   justify-content:center;
@@ -93,6 +100,12 @@ nav a:hover {
   text-align:center;
   max-width:330px;
   box-shadow:0 0 40px rgba(255,183,3,0.15);
+  transition:transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform:translateY(-10px);
+  box-shadow:0 0 50px rgba(255,183,3,0.3);
 }
 
 .card img {
@@ -100,19 +113,15 @@ nav a:hover {
   height:230px;
   object-fit:cover;
   border-radius:16px;
+  transition: transform 0.3s ease;
 }
 
-.card h3 {
-  margin-top:10px;
-  color:#ffd166;
-}
+.card:hover img { transform: scale(1.08); }
 
-.card p {
-  color:#ffb703;
-  font-weight:bold;
-}
+.card h3 { margin-top:10px; color:#ffd166; }
+.card p { color:#ffb703; font-weight:bold; }
 
-/* BUTTON */
+/* ===== BUTTON ===== */
 button {
   margin-top:12px;
   padding:12px 24px;
@@ -124,9 +133,12 @@ button {
   cursor:pointer;
 }
 
-/* FADE IN */
-body { animation:fadeIn 0.8s ease-in-out; }
-@keyframes fadeIn {
-  from{opacity:0;transform:translateY(10px);}
-  to{opacity:1;transform:translateY(0);}
+button:hover { transform:scale(1.05); box-shadow:0 0 15px #ffb703; }
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  .categories { flex-direction:column; align-items:center; }
+  nav { flex-direction:column; gap:10px; }
+  .hero h1 { font-size:40px; }
+  .card img { height:200px; }
 }
