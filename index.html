@@ -4,99 +4,111 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Things.in</title>
+
 <style>
-  body, html {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #0a1f44; /* dark blue */
-    height: 100%;
-  }
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
 
-  h1 {
-    position: relative;
-    z-index: 2;
-    font-size: 4rem;
-    color: white;
-    text-align: center;
-    top: 40%;
-    font-family: Arial, sans-serif;
-  }
+/* Background layer */
+body {
+  background: linear-gradient(to bottom, #0a1f44, #081731);
+  color: white;
+}
 
-  canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: block;
-    z-index: 1;
-  }
+/* NAVBAR */
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 10%;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+/* HERO SECTION */
+.hero {
+  text-align: center;
+  padding: 120px 20px;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+}
+
+.hero p {
+  margin-top: 10px;
+  opacity: 0.8;
+}
+
+/* PRODUCTS SECTION */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 60px 10%;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 10px;
+}
 </style>
 </head>
+
 <body>
-<h1>Things.in</h1>
-<canvas id="starryCanvas"></canvas>
 
-<script>
-const canvas = document.getElementById('starryCanvas');
-const ctx = canvas.getContext('2d');
+<nav>
+  <div><b>Things.in</b></div>
+  <div>
+    <a href="apparels.html">Apparels</a>
+    <a href="accessories.html">Accessories</a>
+  </div>
+</nav>
 
-// Set canvas to full screen
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+<section class="hero">
+  <h1>Minimal. Elegant. Things.</h1>
+  <p>Your aesthetic online store</p>
+</section>
 
-// Star class
-class Star {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.radius = Math.random() * 2 + 1; // make stars bigger
-    this.speed = Math.random() * 0.5 + 0.2;
-    this.opacity = Math.random() * 0.8 + 0.2; // ensure visible
-    this.opacityDirection = Math.random() > 0.5 ? 1 : -1;
-  }
+<section class="products">
+  <div class="card">
+    <img src="https://picsum.photos/400/300?1">
+    <h3>Product One</h3>
+  </div>
+  <div class="card">
+    <img src="https://picsum.photos/400/300?2">
+    <h3>Product Two</h3>
+  </div>
+  <div class="card">
+    <img src="https://picsum.photos/400/300?3">
+    <h3>Product Three</h3>
+  </div>
+</section>
 
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
-    ctx.fill();
-
-    // Move star upward
-    this.y -= this.speed;
-
-    // Twinkle effect
-    this.opacity += 0.005 * this.opacityDirection;
-    if(this.opacity <= 0.2 || this.opacity >= 1) this.opacityDirection *= -1;
-
-    // Respawn at bottom
-    if(this.y < 0) {
-      this.y = canvas.height;
-      this.x = Math.random() * canvas.width;
-    }
-  }
-}
-
-// Create stars
-const stars = [];
-for(let i = 0; i < 300; i++) {
-  stars.push(new Star());
-}
-
-// Animation loop
-function animate() {
-  ctx.fillStyle = '#0a1f44';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  stars.forEach(star => star.draw());
-
-  requestAnimationFrame(animate);
-}
-
-animate();
-</script>
 </body>
 </html>
