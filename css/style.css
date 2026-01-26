@@ -47,3 +47,34 @@ body {
   transform: translateY(-6px);
   background: rgba(255, 255, 255, 0.18);
 }
+/* Pages Layout */
+.page-container {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.grid img {
+  width: 100%;
+  border-radius: 12px;
+  background: white;
+  padding: 10px;
+}
+
+.back-btn {
+  display: inline-block;
+  margin-top: 40px;
+  text-decoration: none;
+  color: white;
+  opacity: 0.7;
+}
+
