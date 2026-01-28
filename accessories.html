@@ -47,34 +47,40 @@
   to{opacity:1;}
 }
 
-/* ELEGANT ARROWS */
+/* REFINED ARROWS */
 .arrow{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
   font-size:22px;
-  color:#111;
-  background:rgba(255,255,255,0.4);
-  padding:4px 8px;
+  color:#444;                      /* darker grey */
+  background:rgba(255,255,255,0.7); /* soft background */
+  padding:5px 9px;
   border-radius:50%;
   cursor:pointer;
-  opacity:0.35;
+  opacity:0.7;                     /* ALWAYS visible */
   transition:0.3s;
   backdrop-filter: blur(3px);
 }
 
-/* Move arrows slightly OUTSIDE */
 .left{ left:-18px; }
 .right{ right:-18px; }
 
-/* Slightly visible on hover */
-.slider:hover .arrow{
-  opacity:0.7;
+/* Slight highlight on hover */
+.arrow:hover{
+  opacity:1;
+  background:rgba(255,255,255,0.9);
 }
 
 .product-name{
   margin-top:12px;
   font-size:16px;
+}
+
+.product-price{
+  margin-top:4px;
+  font-size:15px;
+  color:#444;
 }
 
 @media(max-width:600px){
@@ -114,6 +120,8 @@
     </div>
 
     <div class="product-name">Panda Bottle</div>
+    <div class="product-price">₹399</div>
+
   </div>
 </section>
 
@@ -133,7 +141,6 @@ function changeSlide(step){
   showSlide(current);
 }
 
-/* TOUCH SWIPE */
 let startX = 0;
 const slider = document.getElementById("slider");
 
@@ -147,7 +154,6 @@ slider.addEventListener("touchend", e=>{
   if(endX - startX > 50) changeSlide(-1);
 });
 
-/* MOUSE DRAG */
 let isDown = false;
 
 slider.addEventListener("mousedown", e=>{
