@@ -8,7 +8,7 @@
 
 /* LIGHT THEME WITH VISIBLE BLACK CHECKS */
 body {
-  background-color: white; /* fallback */
+  background-color: white; 
   background-image: 
     linear-gradient(0deg, rgba(0,0,0,0.15) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0,0,0,0.15) 1px, transparent 1px);
@@ -44,26 +44,11 @@ nav {
 .hero {
   text-align: center;
   padding: 120px 20px 60px;
-  position: relative;
 }
 
 .hero h1 {
   font-size: 3.2rem;
   font-weight: 600;
-  position: relative;
-  z-index: 2;
-}
-
-/* HERO OVERLAY */
-.hero::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.7);
-  z-index: 1;
 }
 
 /* CATEGORY BUTTONS */
