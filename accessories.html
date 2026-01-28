@@ -43,27 +43,24 @@
 </div>
 
 <script>
-  const productImages = document.querySelectorAll('.image-frame img, .img-frame img');
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
+const productImages = document.querySelectorAll('.image-frame img, .img-frame img');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
 
-  productImages.forEach(img => {
-    img.addEventListener('click', () => {
-      lightboxImg.src = img.src;
-      lightbox.classList.add('show');   // trigger zoom
-      lightbox.style.display = 'flex';
-    });
+productImages.forEach(img => {
+  img.addEventListener('click', () => {
+    lightboxImg.src = img.src;
+    lightbox.classList.add('show'); // fade-in + zoom-in
   });
+});
 
-  lightbox.addEventListener('click', () => {
-    lightbox.classList.remove('show'); // zoom out
-    setTimeout(() => {
-      lightbox.style.display = 'none';
-      lightboxImg.src = '';
-    }, 300); // matches transition duration
-  });
+lightbox.addEventListener('click', () => {
+  lightbox.classList.remove('show'); // fade-out + zoom-out
+  setTimeout(() => {
+    lightboxImg.src = '';
+  }, 300); // matches transition
+});
 </script>
-
 
 </body>
 </html>
