@@ -5,15 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Accessories - Things.in</title>
 <link rel="stylesheet" href="css/style.css">
+<script src="js/script.js"></script>
 </head>
 
-<body>
+<body onload="checkUser()">
 
 <nav>
   <div class="logo">Things.in</div>
   <div class="nav-links">
     <a href="index.html">Home</a>
-    <a href="apparels.html">Apparels</a>
+    <a href="cart.html">Cart</a>
+    <a href="login.html">Login</a>
+    <span id="userBox"></span>
   </div>
 </nav>
 
@@ -21,48 +24,27 @@
 
   <div class="product-card">
     <div class="image-frame">
-      <img src="images/accessories/placeholder.jpg" alt="bottle">
+      <img src="images/accessories/placeholder.jpg">
     </div>
     <h3>Water Bottle</h3>
     <p class="price">₹349</p>
+    <button class="btn" onclick="addToCart('Water Bottle', 349)">Add to Cart</button>
   </div>
 
   <div class="product-card">
     <div class="image-frame">
-      <img src="images/accessories/bag.jpg" alt="Bag">
+      <img src="images/accessories/bag.jpg">
     </div>
     <h3>Leather Bag</h3>
-    <p class="price">₹3,299</p>
+    <p class="price">₹3299</p>
+    <button class="btn" onclick="addToCart('Leather Bag', 3299)">Add to Cart</button>
   </div>
 
 </section>
 
-<!-- IMAGE POPUP MODAL -->
-<div id="imgModal" class="modal">
-  <span onclick="closeModal()">&times;</span>
+<div id="imgModal" class="modal" onclick="closeModal()">
   <img id="modalImg">
 </div>
-
-<script>
-const images = document.querySelectorAll(".image-frame img");
-const modal = document.getElementById("imgModal");
-const modalImg = document.getElementById("modalImg");
-
-images.forEach(img => {
-  img.addEventListener("click", () => {
-    modal.style.display = "flex";
-    modalImg.src = img.src;
-  });
-});
-
-function closeModal() {
-  modal.style.display = "none";
-}
-
-modal.addEventListener("click", (e) => {
-  if (e.target !== modalImg) closeModal();
-});
-</script>
 
 </body>
 </html>
