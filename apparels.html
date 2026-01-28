@@ -57,15 +57,21 @@
 
   productImages.forEach(img => {
     img.addEventListener('click', () => {
-      lightbox.style.display = 'flex';
       lightboxImg.src = img.src;
+      lightbox.classList.add('show');   // trigger zoom
+      lightbox.style.display = 'flex';
     });
   });
 
   lightbox.addEventListener('click', () => {
-    lightbox.style.display = 'none';
+    lightbox.classList.remove('show'); // zoom out
+    setTimeout(() => {
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+    }, 300); // matches transition duration
   });
 </script>
+
 
 </body>
 </html>
