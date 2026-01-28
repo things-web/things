@@ -1,113 +1,88 @@
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
 /* LIGHT THEME */
 body {
   background: white;
-  color: #0a1f44; /* deep brand blue */
+  color: #0a1f44;
   min-height: 100vh;
 }
 
-/* NAVBAR */
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 10%;
-  border-bottom: 1px solid #eee;
-  background: white;
-}
-
-.logo {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #0a1f44;
-}
-
-.nav-links a {
-  color: #0a1f44;
-  text-decoration: none;
-  margin-left: 25px;
-  font-weight: bold;
-}
-
-/* HERO */
-.hero {
+/* COLLECTION HEADER */
+.collection-header {
   text-align: center;
-  padding: 120px 20px 60px;
+  padding: 60px 20px 10px;
 }
 
-.hero h1 {
-  font-size: 3.2rem;
+.collection-header h2 {
+  font-size: 2rem;
   font-weight: 600;
+  letter-spacing: 1px;
 }
 
-/* CATEGORY BUTTONS */
-.categories {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  padding: 60px 10%;
-  flex-wrap: wrap;
-}
-
-.cat-card {
-  text-decoration: none;
-  color: #0a1f44;
-  font-size: 1.1rem;
-  padding: 20px 55px;
-  border-radius: 40px;
-  border: 1px solid #0a1f44;
-  transition: 0.3s;
-}
-
-.cat-card:hover {
-  background: #0a1f44;
-  color: white;
-}
-
-/* STORE GRID — FASHION STYLE */
+/* STORE GRID */
 .store-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 50px;
-  padding: 80px 10%;
+  padding: 50px 10% 100px;
 }
 
-/* PRODUCT STYLE — NO CARDS */
+/* PRODUCT STYLE */
 .product-card {
   text-align: center;
 }
 
-/* IMAGE CONTAINER */
+/* IMAGE FRAME */
 .image-frame {
   width: 100%;
-  aspect-ratio: 3/4;   /* fashion ratio */
-  background: #f9f9f9;
+  aspect-ratio: 3/4;
+  background: #f6f6f6;
   overflow: hidden;
+  position: relative;
 }
 
-/* IMAGE FILLS CLEAN */
+/* IMAGE */
 .image-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
-/* TEXT */
+/* 🔥 HOVER ZOOM (premium effect) */
+.product-card:hover .image-frame img {
+  transform: scale(1.06);
+}
+
+/* PRODUCT NAME */
 .product-card h3 {
   margin-top: 15px;
   font-size: 1rem;
   font-weight: 500;
 }
 
+/* 💎 PRICE STYLING */
 .price {
-  margin-top: 5px;
+  margin-top: 6px;
   font-size: 0.95rem;
-  color: #555;
+  color: #0a1f44;
+  font-weight: 600;
+}
+
+/* OLD PRICE (optional sale look) */
+.old-price {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 0.85rem;
+  margin-right: 6px;
+}
+
+/* 📱 MOBILE POLISH */
+@media (max-width: 768px) {
+  .store-grid {
+    gap: 30px;
+    padding: 40px 6% 80px;
+  }
+
+  .collection-header h2 {
+    font-size: 1.6rem;
+  }
 }
