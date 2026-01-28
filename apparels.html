@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apparels - Things.in</title>
+<title>Apparels</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 <script src="js/script.js"></script>
 </head>
-
 <body onload="checkUser()">
 
 <nav>
@@ -21,25 +19,12 @@
 </nav>
 
 <section class="store-grid">
-
   <div class="product-card">
-    <div class="image-frame">
-      <img src="images/apparels/placeholder.jpg">
-    </div>
+    <div class="image-frame"><img src="images/apparels/placeholder.jpg"></div>
     <h3>Anime Printed Tshirt</h3>
     <p class="price">₹449</p>
-    <button class="btn" onclick="addToCart('Anime Tshirt', 449)">Add to Cart</button>
+    <button class="btn" onclick="addToCart('Anime Tshirt',449)">Add to Cart</button>
   </div>
-
-  <div class="product-card">
-    <div class="image-frame">
-      <img src="images/apparels/tshirt-black.jpg">
-    </div>
-    <h3>Black T-Shirt</h3>
-    <p class="price">₹449</p>
-    <button class="btn" onclick="addToCart('Black T-Shirt', 449)">Add to Cart</button>
-  </div>
-
 </section>
 
 <div id="imgModal" class="modal" onclick="closeModal()">
