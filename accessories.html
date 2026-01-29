@@ -47,8 +47,34 @@
   opacity: 1;
 }
 
-.prev { left: 8px; }
-.next { right: 8px; }
+/* CART BUTTON SAME AS APPARELS */
+.cart-icon{
+  position:relative;
+  text-decoration:none;
+  font-size:20px;
+}
+.cart-count{
+  position:absolute;
+  top:-8px;
+  right:-10px;
+  background:#0a1f44;
+  color:white;
+  font-size:12px;
+  padding:2px 6px;
+  border-radius:50%;
+}
+
+.add-cart-btn{
+  margin-top:8px;
+  padding:8px 14px;
+  border:1px solid #0a1f44;
+  background:white;
+  cursor:pointer;
+}
+.add-cart-btn:hover{
+  background:#0a1f44;
+  color:white;
+}
 </style>
 </head>
 
@@ -59,6 +85,7 @@
   <div class="nav-links">
     <a href="index.html">Home</a>
     <a href="apparels.html">Apparels</a>
+    <a href="cart.html" class="cart-icon">🛒<span class="cart-count" id="cart-count">0</span></a>
   </div>
 </nav>
 
@@ -87,6 +114,7 @@
 
     <h3>Panda Bottle</h3>
     <p class="price">₹399</p>
+    <button class="add-cart-btn" onclick="addToCart('Panda Bottle',399,'images/accessories/pandabottle4.png')">Add to Cart</button>
   </div>
 
 </section>
@@ -104,6 +132,35 @@ function moveSlide(direction) {
 
   track.style.transform = `translateX(-${index * 100}%)`;
 }
+
+/* CART SYSTEM */
+function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
+function saveCart(cart){localStorage.setItem("cart",JSON.stringify(cart));updateCount();}
+function updateCount(){const cart=getCart();let totalQty=0;cart.forEach(i=>totalQty+=Number(i.qty||0));document.getElementById("cart-count").innerText=totalQty;}
+function showPopup(msg){
+  const pop=document.createElement("div");
+  pop.innerText=msg;
+  pop.style.position="fixed";
+  pop.style.bottom="20px";
+  pop.style.left="50%";
+  pop.style.transform="translateX(-50%)";
+  pop.style.color="black";
+  pop.style.fontSize="14px";
+  pop.style.zIndex="9999";
+  document.body.appendChild(pop);
+  setTimeout(()=>pop.remove(),1500);
+}
+
+function addToCart(name,price,img){
+  price=Number(price);
+  let cart=getCart();
+  let item=cart.find(p=>p.name===name);
+  if(item){item.qty=Number(item.qty)+1;}
+  else{cart.push({name,price,img,qty:1});}
+  saveCart(cart);
+  showPopup("Added to cart");
+}
+updateCount();
 </script>
 
 </body>
