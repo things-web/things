@@ -10,25 +10,6 @@
 .hero-text {
   text-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
-
-/* Cart count bubble */
-.cart-icon {
-  position: relative;
-  text-decoration: none;
-  font-size: 20px;
-}
-
-.cart-count {
-  position: absolute;
-  top: -8px;
-  right: -10px;
-  font-size: 11px;
-  background: black;
-  color: white;
-  border-radius: 50%;
-  padding: 2px 6px;
-  display: none;
-}
 </style>
 </head>
 
@@ -37,10 +18,7 @@
 <nav>
   <div class="logo">Things.in</div>
   <div class="nav-links">
-    <a href="cart.html" class="cart-icon">
-      🛒
-      <span class="cart-count" id="cart-count">0</span>
-    </a>
+    <a href="cart.html">🛒</a>
   </div>
 </nav>
 
@@ -51,23 +29,6 @@
     <a href="accessories.html" class="hero-btn">Accessories</a>
   </div>
 </header>
-
-<script>
-function updateCartCount() {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  let count = cart.reduce((total, item) => total + item.quantity, 0);
-  const bubble = document.getElementById("cart-count");
-
-  if (count > 0) {
-    bubble.style.display = "inline-block";
-    bubble.textContent = count;
-  } else {
-    bubble.style.display = "none";
-  }
-}
-
-updateCartCount();
-</script>
 
 </body>
 </html>
