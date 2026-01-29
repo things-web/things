@@ -7,18 +7,28 @@
 <link rel="stylesheet" href="css/style.css">
 
 <style>
-/* SLIDER INSIDE PRODUCT FRAME */
+/* CENTER SINGLE PRODUCT ON LARGE SCREENS */
+.store-grid {
+  justify-content: center;
+}
+.product-card {
+  max-width: 280px;
+}
+
+/* SLIDER */
+.image-frame { position: relative; }
+
 .slider {
-  position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  position: relative;
 }
 
 .slide-track {
   display: flex;
-  transition: transform 0.4s ease;
   height: 100%;
+  transition: transform 0.4s ease;
 }
 
 .slide-track img {
@@ -28,42 +38,26 @@
   flex-shrink: 0;
 }
 
-/* Subtle arrows */
+/* ARROWS */
 .slide-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.15);
+  background: rgba(0,0,0,0.25);
   border: none;
   color: white;
   font-size: 18px;
   padding: 6px 10px;
   cursor: pointer;
   border-radius: 50%;
-  opacity: 0.6;
+  opacity: 0.7;
+  z-index: 2;
 }
+.slide-btn:hover { opacity: 1; }
+.prev { left: 10px; }
+.next { right: 10px; }
 
-.slide-btn:hover {
-  opacity: 1;
-}
-
-/* CART BUTTON SAME AS APPARELS */
-.cart-icon{
-  position:relative;
-  text-decoration:none;
-  font-size:20px;
-}
-.cart-count{
-  position:absolute;
-  top:-8px;
-  right:-10px;
-  background:#0a1f44;
-  color:white;
-  font-size:12px;
-  padding:2px 6px;
-  border-radius:50%;
-}
-
+/* ADD TO CART */
 .add-cart-btn{
   margin-top:8px;
   padding:8px 14px;
@@ -85,84 +79,51 @@
   <div class="nav-links">
     <a href="index.html">Home</a>
     <a href="apparels.html">Apparels</a>
-    <a href="cart.html" class="cart-icon">🛒<span class="cart-count" id="cart-count">0</span></a>
+    <a href="cart.html">🛒</a>
   </div>
 </nav>
 
 <section class="store-grid">
-
-  <!-- PANDA BOTTLE PRODUCT -->
   <div class="product-card">
     <div class="image-frame">
       <div class="slider">
         <div class="slide-track" id="pandaTrack">
-
-          <!-- MAIN IMAGE FIRST -->
-          <img src="images/accessories/pandabottle4.png" alt="">
-          <img src="images/accessories/pandabottle1.png" alt="">
-          <img src="images/accessories/pandabottle2.png" alt="">
-          <img src="images/accessories/pandabottle3.png" alt="">
-          <img src="images/accessories/pandabottle5.png" alt="">
-          <img src="images/accessories/pandabottle6.png" alt="">
-
+          <img src="images/accessories/pandabottle4.png">
+          <img src="images/accessories/pandabottle1.png">
+          <img src="images/accessories/pandabottle2.png">
+          <img src="images/accessories/pandabottle3.png">
+          <img src="images/accessories/pandabottle5.png">
+          <img src="images/accessories/pandabottle6.png">
         </div>
-
         <button class="slide-btn prev" onclick="moveSlide(-1)">‹</button>
         <button class="slide-btn next" onclick="moveSlide(1)">›</button>
       </div>
     </div>
-
     <h3>Panda Bottle</h3>
     <p class="price">₹399</p>
     <button class="add-cart-btn" onclick="addToCart('Panda Bottle',399,'images/accessories/pandabottle4.png')">Add to Cart</button>
   </div>
-
 </section>
 
 <script>
 let index = 0;
 const track = document.getElementById("pandaTrack");
-const totalSlides = track.children.length;
-
-function moveSlide(direction) {
-  index += direction;
-
-  if (index < 0) index = totalSlides - 1;
-  if (index >= totalSlides) index = 0;
-
+const slides = track.children.length;
+function moveSlide(dir){
+  index += dir;
+  if(index < 0) index = slides-1;
+  if(index >= slides) index = 0;
   track.style.transform = `translateX(-${index * 100}%)`;
 }
-
-/* CART SYSTEM */
 function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
-function saveCart(cart){localStorage.setItem("cart",JSON.stringify(cart));updateCount();}
-function updateCount(){const cart=getCart();let totalQty=0;cart.forEach(i=>totalQty+=Number(i.qty||0));document.getElementById("cart-count").innerText=totalQty;}
-
-/* MINIMAL POPUP FOR ADD TO CART */
-function showPopup(msg){
-  const pop=document.createElement("div");
-  pop.innerText=msg;
-  pop.style.position="fixed";
-  pop.style.bottom="20px";
-  pop.style.left="50%";
-  pop.style.transform="translateX(-50%)";
-  pop.style.color="black";
-  pop.style.fontSize="14px";
-  pop.style.zIndex="9999";
-  document.body.appendChild(pop);
-  setTimeout(()=>pop.remove(),1500);
-}
-
+function saveCart(cart){localStorage.setItem("cart",JSON.stringify(cart));}
 function addToCart(name,price,img){
-  price=Number(price);
   let cart=getCart();
   let item=cart.find(p=>p.name===name);
-  if(item){item.qty=Number(item.qty)+1;}
+  if(item){item.qty++;}
   else{cart.push({name,price,img,qty:1});}
   saveCart(cart);
-  showPopup("Added to cart");
 }
-updateCount();
 </script>
 
 </body>
