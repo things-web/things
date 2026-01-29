@@ -113,12 +113,20 @@ function changeQty(i,d){
 
 function orderWhatsApp(){
   let cart=getCart();
-  let msg="Hi, I want to order:%0A";
+
+  if(cart.length === 0){
+    alert("Your cart is empty");
+    return; // STOPS here
+  }
+
+  let msg="Hey, I'd like to place an order from Things.in:%0A";
   let total=0;
+
   cart.forEach(i=>{
     msg+=`${i.qty}x ${i.name} – ₹${i.price*i.qty}%0A`;
     total+=i.price*i.qty;
   });
+
   msg+=`Total: ₹${total}`;
   window.open(`https://wa.me/${number}?text=${msg}`);
 }
