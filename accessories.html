@@ -3,90 +3,36 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Accessories | Things.in</title>
+<title>Apparels | Things.in</title>
 <link rel="stylesheet" href="css/style.css"/>
 
 <style>
-.page-title{
-  text-align:center;
-  font-size:28px;
-  margin:30px 0;
-}
-
-.product-grid{
-  display:flex;
-  justify-content:center;
-  padding:20px;
-}
-
-.product-card{
-  width:260px;
-  text-align:center;
-}
-
-/* SLIDER */
-.slider{
+.cart-icon{
   position:relative;
-  overflow:hidden;
-  border-radius:12px;
+  text-decoration:none;
+  font-size:20px;
 }
-
-.slider img{
-  width:100%;
-  display:none;
-  user-select:none;
-}
-
-.slider img.active{
-  display:block;
-  animation:fade 0.3s ease;
-}
-
-@keyframes fade{
-  from{opacity:0;}
-  to{opacity:1;}
-}
-
-/* ARROWS */
-.arrow{
+.cart-count{
   position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:26px;
-  color:#222;                     
-  background:rgba(255,255,255,0.6); 
-  padding:6px 10px;
+  top:-8px;
+  right:-10px;
+  background:#0a1f44;
+  color:white;
+  font-size:12px;
+  padding:2px 6px;
   border-radius:50%;
+}
+
+.add-cart-btn{
+  margin-top:8px;
+  padding:8px 14px;
+  border:1px solid #0a1f44;
+  background:white;
   cursor:pointer;
-  opacity:0.8;                    
-  transition:0.3s;
-  backdrop-filter: blur(2px);
-  z-index:10;
 }
-
-.left{ left:-25px; }
-.right{ right:-25px; }
-
-.arrow:hover{
-  opacity:1;
-  background:rgba(255,255,255,0.9);
-}
-
-.product-name{
-  margin-top:12px;
-  font-size:16px;
-}
-
-.product-price{
-  margin-top:4px;
-  font-size:15px;
-  color:#444;
-}
-
-@media(max-width:600px){
-  .product-card{width:85%;}
-  .left{ left:-12px; }
-  .right{ right:-12px; }
+.add-cart-btn:hover{
+  background:#0a1f44;
+  color:white;
 }
 </style>
 </head>
@@ -97,84 +43,125 @@
   <div class="logo">Things.in</div>
   <div class="nav-links">
     <a href="index.html">Home</a>
-    <a href="apparels.html">Apparels</a>
+    <a href="accessories.html">Accessories</a>
+    <a href="cart.html" class="cart-icon">🛒<span class="cart-count" id="cart-count">0</span></a>
   </div>
 </nav>
 
-<h2 class="page-title">Accessories</h2>
+<section class="store-grid">
 
-<section class="product-grid">
   <div class="product-card">
-
-    <div class="slider" id="slider">
-      <span class="arrow left" onclick="changeSlide(-1)">&#10094;</span>
-
-      <!-- Set pandabottle4.png as active first -->
-      <img src="images/accessories/pandabottle1.png">
-      <img src="images/accessories/pandabottle2.png">
-      <img src="images/accessories/pandabottle3.png">
-      <img src="images/accessories/pandabottle4.png" class="active">
-      <img src="images/accessories/pandabottle5.png">
-      <img src="images/accessories/pandabottle6.png">
-
-      <span class="arrow right" onclick="changeSlide(1)">&#10095;</span>
+    <div class="image-frame">
+      <img src="images/apparels/animetshirt.jpg">
     </div>
-
-    <div class="product-name">Panda Bottle</div>
-    <div class="product-price">₹399</div>
-
+    <h3>Anime Printed Tshirt</h3>
+    <p class="price">₹449</p>
+    <button class="add-cart-btn" onclick="addToCart('Anime Printed Tshirt',449,'images/apparels/animetshirt.jpg')">Add to Cart</button>
   </div>
+
+  <div class="product-card">
+    <div class="image-frame">
+      <img src="images/apparels/blackkoreanpant.jpg">
+    </div>
+    <h3>Black Korean Pant</h3>
+    <p class="price">₹799</p>
+    <button class="add-cart-btn" onclick="addToCart('Black Korean Pant',799,'images/apparels/blackkoreanpant.jpg')">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <div class="image-frame">
+      <img src="images/apparels/bluesundress.png">
+    </div>
+    <h3>Blue Sun Dress</h3>
+    <p class="price">₹699</p>
+    <button class="add-cart-btn" onclick="addToCart('Blue Sun Dress',699,'images/apparels/bluesundress.png')">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <div class="image-frame">
+      <img src="images/apparels/brownkoreanpant.jpg">
+    </div>
+    <h3>Brown Korean Pant</h3>
+    <p class="price">₹799</p>
+    <button class="add-cart-btn" onclick="addToCart('Brown Korean Pant',799,'images/apparels/brownkoreanpant.jpg')">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <div class="image-frame">
+      <img src="images/apparels/creamkoreanpants.jpg">
+    </div>
+    <h3>Cream Korean Pants</h3>
+    <p class="price">₹799</p>
+    <button class="add-cart-btn" onclick="addToCart('Cream Korean Pants',799,'images/apparels/creamkoreanpants.jpg')">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <div class="image-frame">
+      <img src="images/apparels/greybonkerstrack.jpg">
+    </div>
+    <h3>Grey Bonkers Track</h3>
+    <p class="price">₹599</p>
+    <button class="add-cart-btn" onclick="addToCart('Grey Bonkers Track',599,'images/apparels/greybonkerstrack.jpg')">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <div class="image-frame">
+      <img src="images/apparels/lightbluejean.jpg">
+    </div>
+    <h3>Light Blue Jeans</h3>
+    <p class="price">₹899</p>
+    <button class="add-cart-btn" onclick="addToCart('Light Blue Jeans',899,'images/apparels/lightbluejean.jpg')">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <div class="image-frame">
+      <img src="images/apparels/redsundress.png">
+    </div>
+    <h3>Red Sun Dress</h3>
+    <p class="price">₹699</p>
+    <button class="add-cart-btn" onclick="addToCart('Red Sun Dress',699,'images/apparels/redsundress.png')">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <div class="image-frame">
+      <img src="images/apparels/washedoutjeans.png">
+    </div>
+    <h3>Washed Out Jeans</h3>
+    <p class="price">₹899</p>
+    <button class="add-cart-btn" onclick="addToCart('Washed Out Jeans',899,'images/apparels/washedoutjeans.png')">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <div class="image-frame">
+      <img src="images/apparels/whitebonkerstrack.png">
+    </div>
+    <h3>White Bonkers Track</h3>
+    <p class="price">₹599</p>
+    <button class="add-cart-btn" onclick="addToCart('White Bonkers Track',599,'images/apparels/whitebonkerstrack.png')">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <div class="image-frame">
+      <img src="images/apparels/yellowsundress.jpg">
+    </div>
+    <h3>Yellow Sun Dress</h3>
+    <p class="price">₹699</p>
+    <button class="add-cart-btn" onclick="addToCart('Yellow Sun Dress',699,'images/apparels/yellowsundress.jpg')">Add to Cart</button>
+  </div>
+
 </section>
 
 <script>
-const slides = document.querySelectorAll("#slider img");
-
-// Start with pandabottle4.png which is 4th in array (index 3)
-let current = 3;
-
-function showSlide(index){
-  slides.forEach(img => img.classList.remove("active"));
-  slides[index].classList.add("active");
+function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
+function saveCart(c){localStorage.setItem("cart",JSON.stringify(c));updateCount();}
+function updateCount(){document.getElementById("cart-count").innerText=getCart().reduce((a,b)=>a+b.qty,0);}
+function addToCart(name,price,img){
+  let cart=getCart();
+  let item=cart.find(p=>p.name===name);
+  if(item)item.qty++; else cart.push({name,price,img,qty:1});
+  saveCart(cart);
 }
-
-showSlide(current);
-
-function changeSlide(step){
-  current += step;
-  if(current < 0) current = slides.length - 1;
-  if(current >= slides.length) current = 0;
-  showSlide(current);
-}
-
-/* TOUCH SWIPE */
-let startX = 0;
-const slider = document.getElementById("slider");
-
-slider.addEventListener("touchstart", e=>{
-  startX = e.touches[0].clientX;
-});
-
-slider.addEventListener("touchend", e=>{
-  let endX = e.changedTouches[0].clientX;
-  if(startX - endX > 50) changeSlide(1);
-  if(endX - startX > 50) changeSlide(-1);
-});
-
-/* MOUSE DRAG */
-let isDown = false;
-
-slider.addEventListener("mousedown", e=>{
-  isDown = true;
-  startX = e.clientX;
-});
-
-document.addEventListener("mouseup", e=>{
-  if(!isDown) return;
-  isDown = false;
-  let endX = e.clientX;
-  if(startX - endX > 50) changeSlide(1);
-  if(endX - startX > 50) changeSlide(-1);
-});
+updateCount();
 </script>
 
 </body>
