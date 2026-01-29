@@ -2,50 +2,79 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Cart - Things.in</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart | Things.in</title>
 <link rel="stylesheet" href="css/style.css">
+<style>
+.cart-item{display:flex;gap:15px;margin:20px 0;align-items:center;}
+.cart-item img{width:70px;height:90px;object-fit:cover;}
+.qty-btn{padding:4px 10px;border:1px solid #0a1f44;background:white;cursor:pointer;}
+.whatsapp-btn{
+  margin-top:20px;
+  padding:12px 20px;
+  border:none;
+  background:#25D366;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+</style>
 </head>
-
 <body>
 
 <nav>
-  <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Things.in</a></div>
-  <div class="nav-links"><a href="index.html">Home</a></div>
+  <div class="logo">Things.in</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="apparels.html">Apparels</a>
+  </div>
 </nav>
 
-<section style="padding:40px 10%;">
-  <h2>Your Cart</h2>
-  <div id="cart-items"></div>
-  <h3 id="total"></h3>
-  <button onclick="orderWhatsApp()" style="margin-top:20px;padding:10px 20px;border:1px solid black;background:none;">
-    Proceed to Order on WhatsApp
-  </button>
-</section>
+<h2 style="text-align:center;margin:30px 0;">Your Cart</h2>
+<div id="cart-container" style="padding:0 10%;"></div>
+<button class="whatsapp-btn" onclick="orderWhatsApp()">Order on WhatsApp</button>
 
 <script>
-let cart=JSON.parse(localStorage.getItem("cart"))||[];
-let container=document.getElementById("cart-items");
-let total=0;
+const number="919961365304";
+function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
+function saveCart(c){localStorage.setItem("cart",JSON.stringify(c));renderCart();}
 
-cart.forEach(item=>{
-  total+=item.price;
-  container.innerHTML+=`
-    <div style="display:flex;gap:15px;margin-bottom:15px;">
-      <img src="${item.image}" style="width:70px;">
-      <div>
-        <p>${item.name}</p>
-        <p>₹${item.price}</p>
-      </div>
-    </div>`;
-});
-document.getElementById("total").innerText="Total: ₹"+total;
+function renderCart(){
+  let cart=getCart();let container=document.getElementById("cart-container");
+  container.innerHTML="";let total=0;
+  cart.forEach((item,i)=>{
+    total+=item.price*item.qty;
+    container.innerHTML+=`
+      <div class="cart-item">
+        <img src="${item.img}">
+        <div>
+          <div>${item.name}</div>
+          <div>₹${item.price}</div>
+          <button class="qty-btn" onclick="changeQty(${i},-1)">-</button>
+          ${item.qty}
+          <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
+        </div>
+      </div>`;
+  });
+  container.innerHTML+=`<h3>Total: ₹${total}</h3>`;
+}
+
+function changeQty(i,d){
+  let cart=getCart();
+  cart[i].qty+=d;
+  if(cart[i].qty<=0)cart.splice(i,1);
+  saveCart(cart);
+}
 
 function orderWhatsApp(){
-  let msg="Order:%0A";
-  cart.forEach(i=>msg+=`${i.name} - ₹${i.price}%0A`);
-  msg+="Total: ₹"+total;
-  window.open(`https://wa.me/919961365304?text=${msg}`);
+  let cart=getCart();let msg="Hi, I want to order:%0A";
+  let total=0;
+  cart.forEach(i=>{msg+=`${i.qty}x ${i.name} – ₹${i.price*i.qty}%0A`;total+=i.price*i.qty;});
+  msg+=`Total: ₹${total}`;
+  window.open(`https://wa.me/${number}?text=${msg}`);
 }
+
+renderCart();
 </script>
 
 </body>
