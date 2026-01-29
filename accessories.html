@@ -137,6 +137,8 @@ function moveSlide(direction) {
 function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
 function saveCart(cart){localStorage.setItem("cart",JSON.stringify(cart));updateCount();}
 function updateCount(){const cart=getCart();let totalQty=0;cart.forEach(i=>totalQty+=Number(i.qty||0));document.getElementById("cart-count").innerText=totalQty;}
+
+/* MINIMAL POPUP FOR ADD TO CART */
 function showPopup(msg){
   const pop=document.createElement("div");
   pop.innerText=msg;
