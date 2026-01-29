@@ -7,123 +7,70 @@
 <link rel="stylesheet" href="css/style.css">
 
 <style>
-/* CENTER SINGLE PRODUCT ON LARGE SCREENS */
-.store-grid {
-  justify-content: center;
-}
-.product-card {
-  max-width: 280px;
-}
+.slider{position:relative;overflow:hidden;}
+.slides{display:flex;transition:transform .4s ease;}
+.slides img{width:100%;flex-shrink:0;}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);
+background:rgba(0,0,0,.2);border:none;color:white;font-size:18px;padding:6px 10px;}
+.arrow.left{left:-35px;} .arrow.right{right:-35px;}
 
-/* SLIDER */
-.image-frame { position: relative; }
-
-.slider {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.slide-track {
-  display: flex;
-  height: 100%;
-  transition: transform 0.4s ease;
-}
-
-.slide-track img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-/* ARROWS */
-.slide-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.25);
-  border: none;
-  color: white;
-  font-size: 18px;
-  padding: 6px 10px;
-  cursor: pointer;
-  border-radius: 50%;
-  opacity: 0.7;
-  z-index: 2;
-}
-.slide-btn:hover { opacity: 1; }
-.prev { left: 10px; }
-.next { right: 10px; }
-
-/* ADD TO CART */
-.add-cart-btn{
-  margin-top:8px;
-  padding:8px 14px;
-  border:1px solid #0a1f44;
-  background:white;
-  cursor:pointer;
-}
-.add-cart-btn:hover{
-  background:#0a1f44;
-  color:white;
-}
+.add-cart{margin-top:8px;padding:8px 16px;border:1px solid black;background:none;}
+#cart-msg{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);font-size:14px;color:black;display:none;}
 </style>
 </head>
 
 <body>
 
 <nav>
-  <div class="logo">Things.in</div>
+  <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Things.in</a></div>
   <div class="nav-links">
     <a href="index.html">Home</a>
-    <a href="apparels.html">Apparels</a>
-    <a href="cart.html">🛒</a>
+    <a href="cart.html" class="cart-link">🛒 <span id="cart-count">0</span></a>
   </div>
 </nav>
 
 <section class="store-grid">
-  <div class="product-card">
-    <div class="image-frame">
-      <div class="slider">
-        <div class="slide-track" id="pandaTrack">
-          <img src="images/accessories/pandabottle4.png">
-          <img src="images/accessories/pandabottle1.png">
-          <img src="images/accessories/pandabottle2.png">
-          <img src="images/accessories/pandabottle3.png">
-          <img src="images/accessories/pandabottle5.png">
-          <img src="images/accessories/pandabottle6.png">
-        </div>
-        <button class="slide-btn prev" onclick="moveSlide(-1)">‹</button>
-        <button class="slide-btn next" onclick="moveSlide(1)">›</button>
-      </div>
+<div class="product-card">
+  <div class="slider">
+    <button class="arrow left" onclick="moveSlide(-1)">‹</button>
+    <div class="slides" id="slides">
+      <img src="images/accessories/pandabottle4.png">
+      <img src="images/accessories/pandabottle1.png">
+      <img src="images/accessories/pandabottle2.png">
+      <img src="images/accessories/pandabottle3.png">
+      <img src="images/accessories/pandabottle5.png">
+      <img src="images/accessories/pandabottle6.png">
     </div>
-    <h3>Panda Bottle</h3>
-    <p class="price">₹399</p>
-    <button class="add-cart-btn" onclick="addToCart('Panda Bottle',399,'images/accessories/pandabottle4.png')">Add to Cart</button>
+    <button class="arrow right" onclick="moveSlide(1)">›</button>
   </div>
+  <h3>Panda Bottle</h3>
+  <p class="price">₹399</p>
+  <button class="add-cart" onclick="addToCart('Panda Bottle',399,'images/accessories/pandabottle4.png')">Add to Cart</button>
+</div>
 </section>
 
+<div id="cart-msg">Added to cart</div>
+
 <script>
-let index = 0;
-const track = document.getElementById("pandaTrack");
-const slides = track.children.length;
-function moveSlide(dir){
-  index += dir;
-  if(index < 0) index = slides-1;
-  if(index >= slides) index = 0;
-  track.style.transform = `translateX(-${index * 100}%)`;
+let index=0;
+const slides=document.getElementById("slides");
+const total=slides.children.length;
+function moveSlide(s){ index=(index+s+total)%total; slides.style.transform=`translateX(-${index*100}%)`; }
+
+function addToCart(name, price, image){
+  let cart=JSON.parse(localStorage.getItem("cart"))||[];
+  cart.push({name,price,image,quantity:1});
+  localStorage.setItem("cart",JSON.stringify(cart));
+  updateCartCount();
+  cartMsg.style.display="block";
+  setTimeout(()=>cartMsg.style.display="none",1200);
 }
-function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
-function saveCart(cart){localStorage.setItem("cart",JSON.stringify(cart));}
-function addToCart(name,price,img){
-  let cart=getCart();
-  let item=cart.find(p=>p.name===name);
-  if(item){item.qty++;}
-  else{cart.push({name,price,img,qty:1});}
-  saveCart(cart);
+
+function updateCartCount(){
+  let cart=JSON.parse(localStorage.getItem("cart"))||[];
+  document.getElementById("cart-count").innerText=cart.length;
 }
+updateCartCount();
 </script>
 
 </body>
