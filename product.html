@@ -7,49 +7,52 @@
 <link rel="stylesheet" href="css/style.css">
 
 <style>
-.product-page{max-width:1100px;margin:40px auto;display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start;}
-.product-images{position:relative;}
-.slider{overflow:hidden;width:100%;}
-.slide-track{display:flex;transition:transform .4s ease;}
-.slide-track img{width:100%;flex-shrink:0;object-fit:cover;border-radius:6px;}
-.slide-btn{
-  position:absolute;top:50%;transform:translateY(-50%);
-  background:rgba(0,0,0,0.25);border:none;color:white;
-  font-size:18px;padding:6px 10px;cursor:pointer;border-radius:50%;
+.product-container{
+  max-width:900px;
+  margin:40px auto;
+  padding:0 20px;
+  display:flex;
+  gap:50px;
+  align-items:flex-start;
 }
-.prev{left:10px}.next{right:10px}
 
-.product-info h1{font-size:26px;margin-bottom:10px}
-.price{font-size:20px;margin-bottom:15px}
+.product-images{flex:1;max-width:420px;position:relative;}
+.product-images img{width:100%;border-radius:6px;}
+
+.product-details{flex:1;max-width:420px;}
+.price{font-size:18px;margin:10px 0;}
+
+.size-select{margin:15px 0;}
 
 .add-cart-btn{
-  padding:10px 18px;
+  padding:8px 14px;
   border:1px solid black;
   background:white;
-  color:black;
   cursor:pointer;
 }
-.add-cart-btn:hover{background:black;color:white;}
 
 .added-msg{
   margin-left:10px;
   font-size:13px;
-  color:black;
   opacity:0;
-  transition:opacity .3s ease;
+  transition:opacity 0.3s ease;
 }
-.added-msg.show{opacity:1}
+.added-msg.show{opacity:1;}
 
-.cart-icon{position:relative;text-decoration:none;font-size:20px}
-.cart-count{
-  position:absolute;top:-8px;right:-10px;
-  background:#0a1f44;color:white;font-size:12px;
-  padding:2px 6px;border-radius:50%;
+/* Slider buttons */
+.slide-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(0,0,0,0.3);
+  border:none;
+  color:white;
+  font-size:18px;
+  padding:5px 9px;
+  cursor:pointer;
+  border-radius:50%;
 }
-
-@media(max-width:768px){
-  .product-page{grid-template-columns:1fr}
-}
+.prev{left:5px;} .next{right:5px;}
 </style>
 </head>
 
@@ -64,87 +67,95 @@
   </div>
 </nav>
 
-<div class="product-page">
+<div class="product-container">
+
   <div class="product-images">
-    <div class="slider">
-      <div class="slide-track" id="slideTrack"></div>
-    </div>
-    <button class="slide-btn prev" onclick="moveSlide(-1)">‹</button>
-    <button class="slide-btn next" onclick="moveSlide(1)">›</button>
+    <img id="productImage" src="">
+    <button class="slide-btn prev" onclick="moveSlide(-1)" style="display:none;">‹</button>
+    <button class="slide-btn next" onclick="moveSlide(1)" style="display:none;">›</button>
   </div>
 
-  <div class="product-info">
-    <h1 id="pName"></h1>
-    <p class="price" id="pPrice"></p>
+  <div class="product-details">
+    <h2 id="productName"></h2>
+    <p class="price" id="productPrice"></p>
 
-    <button class="add-cart-btn" id="addBtn">Add to Cart</button>
+    <div class="size-select" id="sizeSelect" style="display:none;">
+      Size:
+      <select>
+        <option>S</option><option>M</option><option>L</option><option>XL</option>
+      </select>
+    </div>
+
+    <button class="add-cart-btn" onclick="addToCart()">Add to Cart</button>
     <span class="added-msg" id="addedMsg">Added</span>
   </div>
+
 </div>
 
 <script>
-const products={
+const params=new URLSearchParams(window.location.search);
+const id=params.get("id");
 
-  "anime-tshirt":{name:"Oversized Anime Printed Tshirt",price:449,images:["images/apparels/animetshirt.jpg"]},
-  "black-pant":{name:"Black Korean Pants",price:559,images:["images/apparels/blackkoreanpant.jpg"]},
-  "brown-pant":{name:"Brown Korean Pants",price:559,images:["images/apparels/brownkoreanpant.jpg"]},
-  "cream-pant":{name:"Cream Korean Pants",price:559,images:["images/apparels/creamkoreanpants.jpg"]},
-  "light-jeans":{name:"Light Blue Jeans",price:559,images:["images/apparels/lightbluejean.jpg"]},
-  "washed-jeans":{name:"Washed Out Jeans",price:559,images:["images/apparels/washedoutjeans.png"]},
-  "white-track":{name:"White Bonkers Track",price:699,images:["images/apparels/whitebonkerstrack.png"]},
-  "grey-track":{name:"Grey Bonkers Track",price:699,images:["images/apparels/greybonkerstrack.jpg"]},
-  "yellow-sundress":{name:"Yellow Sundress",price:799,images:["images/apparels/yellowsundress.jpg"]},
-  "red-sundress":{name:"Red Sundress",price:799,images:["images/apparels/redsundress.png"]},
-  "blue-sundress":{name:"Blue Sundress",price:799,images:["images/apparels/bluesundress.png"]},
+const products={
+  "anime-tshirt":{name:"Oversized Anime Printed Tshirt",price:449,img:["images/apparels/animetshirt.jpg"],sizes:true},
+  "black-pant":{name:"Black Korean Pants",price:559,img:["images/apparels/blackkoreanpant.jpg"],sizes:true},
+  "brown-pant":{name:"Brown Korean Pants",price:559,img:["images/apparels/brownkoreanpant.jpg"],sizes:true},
+  "cream-pant":{name:"Cream Korean Pants",price:559,img:["images/apparels/creamkoreanpants.jpg"],sizes:true},
+  "light-jeans":{name:"Light Blue Jeans",price:559,img:["images/apparels/lightbluejean.jpg"],sizes:true},
+  "washed-jeans":{name:"Washed Out Jeans",price:559,img:["images/apparels/washedoutjeans.png"],sizes:true},
+  "white-track":{name:"White Bonkers Track",price:699,img:["images/apparels/whitebonkerstrack.png"],sizes:true},
+  "grey-track":{name:"Grey Bonkers Track",price:699,img:["images/apparels/greybonkerstrack.jpg"],sizes:true},
+  "yellow-sundress":{name:"Yellow Sundress",price:799,img:["images/apparels/yellowsundress.jpg"],sizes:true},
+  "red-sundress":{name:"Red Sundress",price:799,img:["images/apparels/redsundress.png"],sizes:true},
+  "blue-sundress":{name:"Blue Sundress",price:799,img:["images/apparels/bluesundress.png"],sizes:true},
 
   "panda-bottle":{
     name:"Panda Bottle",
     price:399,
-    images:[
+    img:[
       "images/accessories/pandabottle4.png",
       "images/accessories/pandabottle1.png",
       "images/accessories/pandabottle2.png",
       "images/accessories/pandabottle3.png",
       "images/accessories/pandabottle5.png",
       "images/accessories/pandabottle6.png"
-    ]
+    ],
+    sizes:false
   }
 };
 
-const id=new URLSearchParams(window.location.search).get("id");
 const product=products[id];
+document.getElementById("productName").innerText=product.name;
+document.getElementById("productPrice").innerText="₹"+product.price;
+document.getElementById("productImage").src=product.img[0];
 
-document.getElementById("pName").innerText=product.name;
-document.getElementById("pPrice").innerText="₹"+product.price;
-
-const track=document.getElementById("slideTrack");
-product.images.forEach(src=>{
-  const img=document.createElement("img");
-  img.src=src;
-  track.appendChild(img);
-});
-
-let index=0;
-function moveSlide(dir){
-  index+=dir;
-  if(index<0)index=product.images.length-1;
-  if(index>=product.images.length)index=0;
-  track.style.transform=`translateX(-${index*100}%)`;
+if(product.sizes)document.getElementById("sizeSelect").style.display="block";
+if(product.img.length>1){
+  document.querySelector(".prev").style.display="block";
+  document.querySelector(".next").style.display="block";
 }
 
-/* CART SYSTEM */
+let slideIndex=0;
+function moveSlide(dir){
+  slideIndex+=dir;
+  if(slideIndex<0)slideIndex=product.img.length-1;
+  if(slideIndex>=product.img.length)slideIndex=0;
+  document.getElementById("productImage").src=product.img[slideIndex];
+}
+
 function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
-function saveCart(c){localStorage.setItem("cart",JSON.stringify(c));updateCount();}
+function saveCart(cart){localStorage.setItem("cart",JSON.stringify(cart));updateCount();}
 function updateCount(){
   const cart=getCart();let total=0;
   cart.forEach(i=>total+=Number(i.qty||0));
   document.getElementById("cart-count").innerText=total;
 }
 
-document.getElementById("addBtn").onclick=function(){
+function addToCart(){
   let cart=getCart();
   let item=cart.find(p=>p.name===product.name);
-  if(item){item.qty++}else{cart.push({name:product.name,price:product.price,img:product.images[0],qty:1})}
+  if(item){item.qty+=1;}
+  else{cart.push({name:product.name,price:product.price,img:product.img[0],qty:1});}
   saveCart(cart);
 
   const msg=document.getElementById("addedMsg");
