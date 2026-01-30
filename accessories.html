@@ -1,9 +1,68 @@
-<a href="product.html?id=panda-bottle" class="product-link">
-  <div class="product-card">
-    <div class="image-frame">
-      <img src="images/accessories/pandabottle4.png" alt="Panda Bottle">
-    </div>
-    <h3>Panda Bottle</h3>
-    <p class="price">₹399</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accessories - Things.in</title>
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.store-grid{
+  display:flex;
+  justify-content:center;
+  padding:40px 20px;
+}
+
+.product-link{text-decoration:none;color:black;}
+
+.product-card{
+  width:260px;
+  text-align:center;
+  transition:transform 0.2s ease;
+}
+.product-card:hover{transform:scale(1.03);}
+
+.image-frame img{
+  width:100%;
+  border-radius:6px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">Things.in</div>
+  <div class="nav-links">
+    <a href="apparels.html">Apparels</a>
+    <a href="cart.html" class="cart-icon">🛒<span class="cart-count" id="cart-count">0</span></a>
   </div>
-</a>
+</nav>
+
+<section class="store-grid">
+
+  <a href="product.html?id=panda-bottle" class="product-link">
+    <div class="product-card">
+      <div class="image-frame">
+        <img src="images/accessories/pandabottle4.png" alt="Panda Bottle">
+      </div>
+      <h3>Panda Bottle</h3>
+      <p class="price">₹399</p>
+    </div>
+  </a>
+
+</section>
+
+<script>
+function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
+function updateCount(){
+  const cart=getCart();
+  let total=0;
+  cart.forEach(i=>total+=Number(i.qty||0));
+  document.getElementById("cart-count").innerText=total;
+}
+updateCount();
+</script>
+
+</body>
+</html>
