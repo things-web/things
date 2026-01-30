@@ -5,32 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Accessories - Things.in</title>
 <link rel="stylesheet" href="css/style.css">
-
 <style>
-.store-grid{
-  display:flex;
-  justify-content:center;
-  padding:40px 20px;
+.store-grid {
+  justify-content: center;
 }
-
-.product-link{text-decoration:none;color:black;}
-
-.product-card{
-  width:260px;
-  text-align:center;
-  transition:transform 0.2s ease;
+.product-card {
+  max-width: 280px;
+  text-align: center;
+  cursor: pointer;
 }
-.product-card:hover{transform:scale(1.03);}
-
-.image-frame img{
-  width:100%;
-  border-radius:6px;
+.image-frame {
+  width: 100%;
+  max-width: 250px;
+  margin: 0 auto;
+  overflow: hidden;
 }
+.image-frame img {
+  width: 100%;
+  object-fit: cover;
+}
+h3 { margin: 10px 0 5px; }
+.price { margin: 5px 0 15px; font-weight: 500; color: #333; }
 </style>
 </head>
 
 <body>
-
 <nav>
   <div class="logo">Things.in</div>
   <div class="nav-links">
@@ -40,29 +39,24 @@
 </nav>
 
 <section class="store-grid">
-
-  <a href="product.html?id=panda-bottle" class="product-link">
-    <div class="product-card">
-      <div class="image-frame">
-        <img src="images/accessories/pandabottle4.png" alt="Panda Bottle">
-      </div>
-      <h3>Panda Bottle</h3>
-      <p class="price">₹399</p>
+  <a href="product.html?id=pandabottle" class="product-card">
+    <div class="image-frame">
+      <img src="images/accessories/pandabottle4.png" alt="Panda Bottle">
     </div>
+    <h3>Panda Bottle</h3>
+    <p class="price">₹399</p>
   </a>
-
 </section>
 
 <script>
 function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
 function updateCount(){
-  const cart=getCart();
-  let total=0;
-  cart.forEach(i=>total+=Number(i.qty||0));
-  document.getElementById("cart-count").innerText=total;
+  const cart=getCart(); 
+  let totalQty=0; 
+  cart.forEach(i=>totalQty+=Number(i.qty||0)); 
+  document.getElementById("cart-count").innerText=totalQty;
 }
 updateCount();
 </script>
-
 </body>
 </html>
