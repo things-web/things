@@ -9,7 +9,7 @@
 <style>
 .product-page{
   max-width:500px;
-  margin:40px auto;
+  margin:30px auto 40px;
   text-align:center;
   padding:0 20px;
 }
@@ -19,10 +19,11 @@
   aspect-ratio:3/4;
   object-fit:cover;
   background:#f8f8f8;
+  margin-bottom:10px;   /* tighter gap */
 }
 
 /* SLIDER */
-.slider{position:relative;overflow:hidden;}
+.slider{position:relative;overflow:hidden;margin-bottom:10px;}
 .slide-track{display:flex;transition:transform 0.4s ease;}
 .slide-track img{width:100%;flex-shrink:0;}
 .slide-btn{
@@ -32,14 +33,29 @@
 }
 .prev{left:5px;} .next{right:5px;}
 
-.product-name{margin-top:15px;font-size:20px;font-weight:500;}
-.price{margin-top:5px;color:#666;}
+.product-name{
+  margin-top:5px;       /* reduced */
+  font-size:20px;
+  font-weight:500;
+}
+
+.price{
+  margin-top:2px;       /* reduced */
+  color:#666;
+}
 
 /* SIZE OPTIONS */
-.size-options{margin-top:15px;display:flex;justify-content:center;gap:10px;}
+.size-options,
+.color-options{
+  margin-top:10px;      /* reduced */
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+
 .size-btn{
   border:1px solid #0a1f44;
-  padding:6px 12px;
+  padding:5px 12px;
   cursor:pointer;
   font-size:14px;
   background:white;
@@ -47,27 +63,32 @@
 .size-btn.active{background:#0a1f44;color:white;}
 
 /* COLOR OPTIONS */
-.color-options{margin-top:15px;display:flex;justify-content:center;gap:12px;}
 .color-box{
   width:22px;height:22px;border:1px solid #333;cursor:pointer;
 }
-.yellow{background:#ffe88a;}  /* LIGHT YELLOW */
+.yellow{background:#ffe88a;}
 .grey{background:#888;}
 
-/* ADD TO CART */
+/* ADD TO CART AREA */
+.cart-area{
+  margin-top:14px;
+  display:flex;
+  justify-content:center;   /* HARD CENTER */
+  align-items:center;
+  gap:10px;
+}
+
 .add-cart-btn{
-  margin-top:20px;
   border:1px solid #0a1f44;
   background:white;
   color:#0a1f44;
-  padding:8px 20px;
+  padding:8px 22px;
   cursor:pointer;
   font-size:14px;
 }
 .add-cart-btn:hover{background:#0a1f44;color:white;}
 
 .added{
-  margin-left:10px;
   font-size:13px;
   color:black;
   opacity:0;
@@ -88,19 +109,15 @@
 </nav>
 
 <div class="product-page">
-
   <div id="image-container"></div>
-
   <div class="product-name" id="name"></div>
   <div class="price" id="price"></div>
-
   <div id="options"></div>
 
-  <div>
+  <div class="cart-area">
     <button class="add-cart-btn" id="addBtn">Add to Cart</button>
     <span class="added" id="addedMsg">Added!</span>
   </div>
-
 </div>
 
 <script>
@@ -116,7 +133,6 @@ const products={
   "yellow-sundress":{name:"Yellow Sundress",price:799,img:"images/apparels/yellowsundress.jpg",type:"size"},
   "red-sundress":{name:"Red Sundress",price:799,img:"images/apparels/redsundress.png",type:"size"},
   "blue-sundress":{name:"Blue Sundress",price:799,img:"images/apparels/bluesundress.png",type:"size"},
-
   "panda-bottle":{
     name:"Panda Bottle",
     price:399,
@@ -138,19 +154,18 @@ const p=products[id];
 document.getElementById("name").innerText=p.name;
 document.getElementById("price").innerText="₹"+p.price;
 
-let selectedSize="M";
-let selectedColor="";
-
+let selectedSize="M", selectedColor="";
 const imgContainer=document.getElementById("image-container");
 
 if(p.type==="size"){
   imgContainer.innerHTML=`<img src="${p.img}" class="product-img">`;
-
-  const sizes=["S","M","L","XL"];
-  let html='<div class="size-options">';
-  sizes.forEach(s=>html+=`<div class="size-btn ${s==="M"?"active":""}" onclick="selectSize(this,'${s}')">${s}</div>`);
-  html+='</div>';
-  document.getElementById("options").innerHTML=html;
+  document.getElementById("options").innerHTML=
+    `<div class="size-options">
+      <div class="size-btn active" onclick="selectSize(this,'S')">S</div>
+      <div class="size-btn" onclick="selectSize(this,'M')">M</div>
+      <div class="size-btn" onclick="selectSize(this,'L')">L</div>
+      <div class="size-btn" onclick="selectSize(this,'XL')">XL</div>
+    </div>`;
 }
 
 if(p.type==="color"){
@@ -162,9 +177,8 @@ if(p.type==="color"){
       <button class="slide-btn prev" onclick="move(-1)">‹</button>
       <button class="slide-btn next" onclick="move(1)">›</button>
     </div>`;
-
-  document.getElementById("options").innerHTML=`
-    <div class="color-options">
+  document.getElementById("options").innerHTML=
+    `<div class="color-options">
       <div class="color-box grey" onclick="setColor(1,'Grey')"></div>
       <div class="color-box yellow" onclick="setColor(3,'Yellow')"></div>
     </div>`;
@@ -179,25 +193,18 @@ function selectSize(el,size){
 let index=0;
 function move(d){
   const track=document.getElementById("track");
-  index+=d;
-  if(index<0)index=p.images.length-1;
-  if(index>=p.images.length)index=0;
+  index=(index+d+p.images.length)%p.images.length;
   track.style.transform=`translateX(-${index*100}%)`;
 }
 
 function setColor(i,color){
-  index=i;
-  move(0);
+  index=i; move(0);
   selectedColor=color;
 }
 
-/* CART */
 function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
 function saveCart(c){localStorage.setItem("cart",JSON.stringify(c));updateCount();}
-function updateCount(){
-  let t=0;getCart().forEach(i=>t+=i.qty);
-  document.getElementById("cart-count").innerText=t;
-}
+function updateCount(){let t=0;getCart().forEach(i=>t+=i.qty);document.getElementById("cart-count").innerText=t;}
 
 document.getElementById("addBtn").onclick=()=>{
   let cart=getCart();
