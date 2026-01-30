@@ -3,57 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Product | Things.in</title>
+<title>Product - Things.in</title>
 <link rel="stylesheet" href="css/style.css">
 
 <style>
-body { text-align: center; padding: 20px; }
-nav .nav-links a { margin-left: 15px; }
+body, .nav-links a { font-family: "Helvetica Neue", Arial, sans-serif; }
 
-.product-container { max-width: 400px; margin: 0 auto; }
-.image-frame { position: relative; overflow: hidden; width: 100%; max-width: 350px; margin: 0 auto; }
+.product-container { max-width: 400px; margin: 40px auto; text-align: center; }
+.image-frame { position: relative; width: 100%; aspect-ratio: 1/1; overflow: hidden; margin-bottom: 15px; }
 .slider { width: 100%; overflow: hidden; }
 .slide-track { display: flex; transition: transform 0.4s ease; }
 .slide-track img { width: 100%; flex-shrink: 0; object-fit: cover; }
-.slide-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.25); border: none; color: white; font-size: 18px; padding: 6px 10px; cursor: pointer; border-radius: 50%; opacity: 0.6; }
+
+.slide-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(0,0,0,0.25); border: none; color: white;
+  font-size: 18px; padding: 6px 10px; cursor: pointer; border-radius: 50%;
+  opacity: 0.6; z-index: 2;
+}
 .slide-btn:hover { opacity: 1; }
-.prev { left: 5px; }
-.next { right: 5px; }
+.prev { left: 5px; } .next { right: 5px; }
 
-h1 { margin: 15px 0 5px; font-size: 1.4rem; }
-.price { margin: 5px 0 15px; font-weight: 500; color: #333; }
-
-/* Size selector for apparels */
-.size-options button {
-  padding: 6px 12px; margin: 0 5px 10px 0; border:1px solid #0a1f44; background:white; cursor:pointer;
-}
-.size-options button.selected { background:#0a1f44; color:white; }
-
-/* Color selector for accessories */
-.color-options button {
-  width:20px; height:20px; border:none; cursor:pointer; margin:0 5px 10px 0; border-radius:3px;
-}
-.color-options button.selected { outline: 2px solid #0a1f44; }
-
-/* Add to cart minimal */
-.add-cart-btn {
-  padding: 8px 20px;
-  border: 1px solid #0a1f44;
-  background: white;
-  color: #0a1f44;
-  cursor: pointer;
-  margin-top: 10px;
+/* Add to Cart */
+.cart-action{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;}
+.add-cart-btn{
+  padding:6px 12px; border:1px solid #0a1f44; border-radius:4px;
+  background:white; color:#0a1f44; font-size:14px; cursor:pointer;
 }
 .add-cart-btn:hover { background:#0a1f44; color:white; }
-.added-msg {
-  font-size:12px; background:black; color:white; padding:3px 8px; border-radius:3px; opacity:0; margin-left:10px;
-  display:inline-block; transition:opacity 0.4s ease;
+.added-msg{font-size:12px;background:black;color:white;padding:3px 8px;border-radius:3px;opacity:0;transition:opacity 0.35s ease;}
+.added-msg.show{opacity:1;}
+
+/* Size selection */
+.size-options { display:flex; justify-content:center; gap:10px; margin-top:12px; }
+.size-block { padding:5px 12px; border:1px solid #0a1f44; border-radius:4px; cursor:pointer; }
+.size-block.selected { background:#0a1f44; color:white; }
+
+/* Color selection blocks */
+.color-blocks { display:flex; justify-content:center; gap:10px; margin-top:12px; }
+.color-block{
+  width:20px; height:20px; border-radius:4px; cursor:pointer; border:1px solid #ccc;
 }
-.added-msg.show { opacity:1; }
+.color-block.selected { border:2px solid black; }
+.color-block.yellow { background: yellow; }
+.color-block.grey { background: grey; }
 </style>
 </head>
 
 <body>
+
 <nav>
   <div class="logo">Things.in</div>
   <div class="nav-links">
@@ -66,169 +64,170 @@ h1 { margin: 15px 0 5px; font-size: 1.4rem; }
 <div class="product-container">
   <div class="image-frame">
     <div class="slider">
-      <div class="slide-track" id="slideTrack"></div>
+      <div class="slide-track" id="productTrack"></div>
       <button class="slide-btn prev" onclick="moveSlide(-1)">‹</button>
       <button class="slide-btn next" onclick="moveSlide(1)">›</button>
     </div>
   </div>
-  <h1 id="prodName"></h1>
-  <p class="price" id="prodPrice"></p>
 
-  <div id="sizeOrColor"></div>
+  <h2 id="productName"></h2>
+  <p class="price" id="productPrice"></p>
 
-  <div style="margin-top:10px;">
-    <button class="add-cart-btn" id="addBtn">Add to Cart</button>
-    <span class="added-msg" id="addedMsg">Added!</span>
+  <div id="sizeOptions" class="size-options"></div>
+  <div id="colorOptions" class="color-blocks"></div>
+
+  <div class="cart-action">
+    <button class="add-cart-btn" onclick="addToCartBtn()">Add to Cart</button>
+    <span class="added-msg">Added!</span>
   </div>
 </div>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
-
-/* Product database */
 const products = {
-  "anime-tshirt": {
-    name:"Oversized Anime Printed Tshirt",
-    price:449,
-    images:["images/apparels/animetshirt.jpg"],
-    type:"apparel",
-    sizes:["S","M","L","XL"]
+  // Apparels
+  'anime-tshirt': {
+    type: 'apparel',
+    name: 'Oversized Anime Printed Tshirt',
+    price: 449,
+    images: ['images/apparels/animetshirt.jpg'],
+    sizes: ['S','M','L','XL']
   },
-  "black-pant": {
-    name:"Black Korean Pants",
-    price:559,
-    images:["images/apparels/blackkoreanpant.jpg"],
-    type:"apparel",
-    sizes:["S","M","L","XL"]
+  'black-pant': {
+    type: 'apparel',
+    name: 'Black Korean Pants',
+    price: 559,
+    images: ['images/apparels/blackkoreanpant.jpg'],
+    sizes: ['S','M','L','XL']
   },
-  "brown-pant": {
-    name:"Brown Korean Pants",
-    price:559,
-    images:["images/apparels/brownkoreanpant.jpg"],
-    type:"apparel",
-    sizes:["S","M","L","XL"]
+  'brown-pant': {
+    type: 'apparel',
+    name: 'Brown Korean Pants',
+    price: 559,
+    images: ['images/apparels/brownkoreanpant.jpg'],
+    sizes: ['S','M','L','XL']
   },
-  "cream-pant": {
-    name:"Cream Korean Pants",
-    price:559,
-    images:["images/apparels/creamkoreanpants.jpg"],
-    type:"apparel",
-    sizes:["S","M","L","XL"]
+  'blue-sundress': {
+    type: 'apparel',
+    name: 'Blue Sundress',
+    price: 799,
+    images: ['images/apparels/bluesundress.png'],
+    sizes: ['S','M','L']
   },
-  "blue-sundress": {
-    name:"Blue Sundress",
-    price:799,
-    images:["images/apparels/bluesundress.png"],
-    type:"apparel",
-    sizes:["S","M","L"]
-  },
-  "red-sundress": {
-    name:"Red Sundress",
-    price:799,
-    images:["images/apparels/redsundress.png"],
-    type:"apparel",
-    sizes:["S","M","L"]
-  },
-  "yellow-sundress": {
-    name:"Yellow Sundress",
-    price:799,
-    images:["images/apparels/yellowsundress.jpg"],
-    type:"apparel",
-    sizes:["S","M","L"]
-  },
-  "white-track": {
-    name:"White Bonkers Track",
-    price:699,
-    images:["images/apparels/whitebonkerstrack.png"],
-    type:"apparel",
-    sizes:["S","M","L","XL"]
-  },
-  "grey-track": {
-    name:"Grey Bonkers Track",
-    price:699,
-    images:["images/apparels/greybonkerstrack.jpg"],
-    type:"apparel",
-    sizes:["S","M","L","XL"]
-  },
-  "pandabottle": {
-    name:"Panda Bottle",
-    price:399,
-    images:[
-      "images/accessories/pandabottle4.png",
-      "images/accessories/pandabottle1.png",
-      "images/accessories/pandabottle2.png",
-      "images/accessories/pandabottle3.png",
-      "images/accessories/pandabottle5.png",
-      "images/accessories/pandabottle6.png"
-    ],
-    type:"accessory",
-    colors:["yellow","grey"]
+  // Accessories
+  'pandabottle': {
+    type: 'accessory',
+    name: 'Panda Bottle',
+    price: 399,
+    images: { grey:['images/accessories/pandabottle1.png'], yellow:['images/accessories/pandabottle3.png'] },
+    colors: ['grey','yellow']
   }
 };
 
-/* Populate product info */
+// get product id from URL
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get('id');
 const product = products[id];
-if(!product){ alert("Product not found"); }
 
-const track = document.getElementById("slideTrack");
-product.images.forEach(src=>{
-  const img = document.createElement("img");
-  img.src=src;
-  track.appendChild(img);
-});
+const track = document.getElementById('productTrack');
+const nameEl = document.getElementById('productName');
+const priceEl = document.getElementById('productPrice');
+const sizeEl = document.getElementById('sizeOptions');
+const colorEl = document.getElementById('colorOptions');
 
-document.getElementById("prodName").innerText = product.name;
-document.getElementById("prodPrice").innerText = "₹"+product.price;
+let currentIndex = 0;
+let currentColor = product.type==='accessory'?product.colors[0]:null;
 
-const container = document.getElementById("sizeOrColor");
-if(product.type==="apparel"){
-  const sizeDiv = document.createElement("div");
-  sizeDiv.className="size-options";
-  product.sizes.forEach(sz=>{
-    const btn = document.createElement("button");
-    btn.innerText=sz;
-    btn.onclick=()=>{document.querySelectorAll(".size-options button").forEach(b=>b.classList.remove("selected")); btn.classList.add("selected");};
-    sizeDiv.appendChild(btn);
-  });
-  container.appendChild(sizeDiv);
-}else if(product.type==="accessory"){
-  const colorDiv = document.createElement("div");
-  colorDiv.className="color-options";
-  product.colors.forEach(c=>{
-    const btn = document.createElement("button");
-    btn.style.background = c;
-    btn.onclick=()=>{document.querySelectorAll(".color-options button").forEach(b=>b.classList.remove("selected")); btn.classList.add("selected");};
-    colorDiv.appendChild(btn);
-  });
-  container.appendChild(colorDiv);
+// initialize
+function initProduct() {
+  nameEl.innerText = product.name;
+  priceEl.innerText = '₹'+product.price;
+
+  // slider images
+  track.innerHTML = '';
+  if(product.type==='apparel'){
+    product.images.forEach(src=>{
+      const img = document.createElement('img');
+      img.src = src;
+      track.appendChild(img);
+    });
+    // size selection
+    sizeEl.innerHTML = '';
+    product.sizes.forEach(s=>{
+      const btn = document.createElement('div');
+      btn.classList.add('size-block');
+      btn.innerText = s;
+      btn.onclick = () => {
+        document.querySelectorAll('.size-block').forEach(b=>b.classList.remove('selected'));
+        btn.classList.add('selected');
+      };
+      sizeEl.appendChild(btn);
+    });
+  }
+
+  if(product.type==='accessory'){
+    product.colors.forEach(c=>{
+      const div = document.createElement('div');
+      div.classList.add('color-block', c);
+      if(c===currentColor) div.classList.add('selected');
+      div.onclick = () => switchColor(c);
+      colorEl.appendChild(div);
+    });
+    loadColorImages(currentColor);
+  }
 }
 
-/* Slider */
-let index = 0;
+// load images for selected color (accessories)
+function loadColorImages(color){
+  track.innerHTML = '';
+  product.images[color].forEach(src=>{
+    const img = document.createElement('img');
+    img.src = src;
+    track.appendChild(img);
+  });
+  currentIndex = 0;
+  track.style.transform = 'translateX(0%)';
+}
+
+// slider controls
 function moveSlide(dir){
-  index+=dir;
-  if(index<0) index = product.images.length-1;
-  if(index>=product.images.length) index = 0;
-  track.style.transform=`translateX(-${index*100}%)`;
+  currentIndex += dir;
+  if(currentIndex<0) currentIndex = track.children.length-1;
+  if(currentIndex>=track.children.length) currentIndex=0;
+  track.style.transform = `translateX(-${currentIndex*100}%)`;
 }
 
-/* Cart system */
-function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
-function saveCart(cart){localStorage.setItem("cart",JSON.stringify(cart));updateCount();}
-function updateCount(){const cart=getCart(); let total=0; cart.forEach(i=>total+=Number(i.qty||0)); document.getElementById("cart-count").innerText=total;}
-updateCount();
+// color switch
+function switchColor(color){
+  currentColor = color;
+  document.querySelectorAll('.color-block').forEach(b=>b.classList.remove('selected'));
+  document.querySelector(`.color-block.${color}`).classList.add('selected');
+  loadColorImages(color);
+}
 
-/* Add to cart */
-document.getElementById("addBtn").onclick = function(){
+// cart
+function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
+function saveCart(cart){localStorage.setItem("cart",JSON.stringify(cart)); updateCount();}
+function updateCount(){const cart=getCart(); let totalQty=0; cart.forEach(i=>totalQty+=Number(i.qty||0)); document.getElementById("cart-count").innerText=totalQty;}
+function addToCartBtn(){
   let cart = getCart();
-  let item = cart.find(p=>p.name===product.name);
-  if(item){item.qty+=1;} else {cart.push({name:product.name, price:product.price, img:product.images[0], qty:1});}
+  const imgSrc = product.type==='apparel'?product.images[0]:product.images[currentColor][0];
+  const name = product.name;
+  const price = product.price;
+  const size = product.type==='apparel'?document.querySelector('.size-block.selected')?.innerText:null;
+  const color = product.type==='accessory'?currentColor:null;
+
+  let item = cart.find(p=>p.name===name && p.size===size && p.color===color);
+  if(item) item.qty+=1;
+  else cart.push({name,price,img:imgSrc,qty:1,size,color});
+
   saveCart(cart);
-  const msg = document.getElementById("addedMsg");
-  msg.classList.add("show");
-  setTimeout(()=>msg.classList.remove("show"),900);
-};
+  const msg = document.querySelector('.added-msg');
+  msg.classList.add('show');
+  setTimeout(()=>msg.classList.remove('show'),900);
+}
+
+initProduct();
+updateCount();
 </script>
 </body>
 </html>
