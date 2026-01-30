@@ -7,219 +7,304 @@
 <link rel="stylesheet" href="css/style.css">
 
 <style>
-.product-page{
-  max-width:500px;
-  margin:30px auto 40px;
-  text-align:center;
-  padding:0 20px;
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  margin:0;
+  padding:0;
+  background:#fff;
+  color:#000;
 }
 
-.product-img{
-  width:100%;
-  aspect-ratio:3/4;
-  object-fit:cover;
-  background:#f8f8f8;
-  margin-bottom:10px;   /* tighter gap */
+/* Logo top-left, home button */
+.logo {
+  position: fixed;
+  top: 20px;
+  left: 30px;
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+  color: black;
+  z-index: 999;
 }
 
-/* SLIDER */
-.slider{position:relative;overflow:hidden;margin-bottom:10px;}
-.slide-track{display:flex;transition:transform 0.4s ease;}
-.slide-track img{width:100%;flex-shrink:0;}
-.slide-btn{
-  position:absolute;top:50%;transform:translateY(-50%);
-  background:rgba(0,0,0,0.25);border:none;color:white;
-  font-size:18px;padding:6px 10px;border-radius:50%;cursor:pointer;
-}
-.prev{left:5px;} .next{right:5px;}
-
-.product-name{
-  margin-top:5px;       /* reduced */
-  font-size:20px;
-  font-weight:500;
+/* Product container */
+.product-container {
+  max-width: 420px;
+  margin: 80px auto 40px;
+  text-align: center;
 }
 
-.price{
-  margin-top:2px;       /* reduced */
-  color:#666;
+.product-container img {
+  width: 100%;
+  max-width: 330px;
+  display: block;
+  margin: 0 auto 8px;
 }
 
-/* SIZE OPTIONS */
-.size-options,
-.color-options{
-  margin-top:10px;      /* reduced */
-  display:flex;
-  justify-content:center;
-  gap:10px;
+.product-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 4px 0;
 }
 
-.size-btn{
-  border:1px solid #0a1f44;
-  padding:5px 12px;
+.product-desc {
+  font-size: 14px;
+  color: #444;
+  margin: 2px 0 8px;
+}
+
+/* Size options for apparels */
+.size-option {
+  display: inline-block;
+  border: 1px solid #000;
+  padding: 4px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* Color options for accessories */
+.color-option {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  margin: 0 6px;
+  cursor: pointer;
+  border: 1px solid #000;
+}
+
+/* Add to cart button */
+.add-btn {
+  display: block;
+  margin: 12px auto 0;
+  padding: 10px 24px;
+  font-size: 14px;
+  border: 1px solid #000;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.add-btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+/* Image slider for accessories */
+.slider-container {
+  position: relative;
+  overflow: hidden;
+  max-width: 330px;
+  margin: 0 auto 8px;
+}
+
+.slide-track {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
+.slide-track img {
+  width: 100%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.slide-btn {
+  position: absolute; top:50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.25);
+  border:none;
+  color:white;
+  font-size:18px;
+  padding:6px 10px;
   cursor:pointer;
-  font-size:14px;
-  background:white;
+  border-radius:50%;
+  opacity:0.6;
 }
-.size-btn.active{background:#0a1f44;color:white;}
-
-/* COLOR OPTIONS */
-.color-box{
-  width:22px;height:22px;border:1px solid #333;cursor:pointer;
-}
-.yellow{background:#ffe88a;}
-.grey{background:#888;}
-
-/* ADD TO CART AREA */
-.cart-area{
-  margin-top:14px;
-  display:flex;
-  justify-content:center;   /* HARD CENTER */
-  align-items:center;
-  gap:10px;
-}
-
-.add-cart-btn{
-  border:1px solid #0a1f44;
-  background:white;
-  color:#0a1f44;
-  padding:8px 22px;
-  cursor:pointer;
-  font-size:14px;
-}
-.add-cart-btn:hover{background:#0a1f44;color:white;}
-
-.added{
-  font-size:13px;
-  color:black;
-  opacity:0;
-  transition:opacity 0.3s ease;
-}
-.added.show{opacity:1;}
+.slide-btn:hover {opacity:1;}
+.prev {left:5px;}
+.next {right:5px;}
 </style>
 </head>
 
 <body>
 
-<nav>
-  <a href="index.html" class="logo">Things.in</a>
-  <div class="nav-links">
-    <a href="accessories.html">Accessories</a>
-    <a href="cart.html" class="cart-icon">🛒<span class="cart-count" id="cart-count">0</span></a>
-  </div>
-</nav>
+<a href="index.html" class="logo">Things.in</a>
 
-<div class="product-page">
-  <div id="image-container"></div>
-  <div class="product-name" id="name"></div>
-  <div class="price" id="price"></div>
-  <div id="options"></div>
-
-  <div class="cart-area">
-    <button class="add-cart-btn" id="addBtn">Add to Cart</button>
-    <span class="added" id="addedMsg">Added!</span>
-  </div>
+<div class="product-container" id="productContainer">
+  <!-- JS will populate content here -->
 </div>
 
 <script>
-const products={
-  "anime-tshirt":{name:"Oversized Anime Printed Tshirt",price:449,img:"images/apparels/animetshirt.jpg",type:"size"},
-  "black-pant":{name:"Black Korean Pants",price:559,img:"images/apparels/blackkoreanpant.jpg",type:"size"},
-  "brown-pant":{name:"Brown Korean Pants",price:559,img:"images/apparels/brownkoreanpant.jpg",type:"size"},
-  "cream-pant":{name:"Cream Korean Pants",price:559,img:"images/apparels/creamkoreanpants.jpg",type:"size"},
-  "light-jeans":{name:"Light Blue Jeans",price:559,img:"images/apparels/lightbluejean.jpg",type:"size"},
-  "washed-jeans":{name:"Washed Out Jeans",price:559,img:"images/apparels/washedoutjeans.png",type:"size"},
-  "white-track":{name:"White Bonkers Track",price:699,img:"images/apparels/whitebonkerstrack.png",type:"size"},
-  "grey-track":{name:"Grey Bonkers Track",price:699,img:"images/apparels/greybonkerstrack.jpg",type:"size"},
-  "yellow-sundress":{name:"Yellow Sundress",price:799,img:"images/apparels/yellowsundress.jpg",type:"size"},
-  "red-sundress":{name:"Red Sundress",price:799,img:"images/apparels/redsundress.png",type:"size"},
-  "blue-sundress":{name:"Blue Sundress",price:799,img:"images/apparels/bluesundress.png",type:"size"},
-  "panda-bottle":{
+const products = {
+  // Apparels
+  "anime-tshirt": {
+    name:"Oversized Anime Printed Tshirt",
+    price:449,
+    desc:"Comfortable cotton oversized anime printed t-shirt.",
+    img:["images/apparels/animetshirt.jpg"],
+    type:"apparel",
+    sizes:["S","M","L","XL"]
+  },
+  "black-pant": {
+    name:"Black Korean Pants",
+    price:559,
+    desc:"Loose fit black Korean style pants.",
+    img:["images/apparels/blackkoreanpant.jpg"],
+    type:"apparel",
+    sizes:["S","M","L","XL"]
+  },
+  "brown-pant": {
+    name:"Brown Korean Pants",
+    price:559,
+    desc:"Classic brown Korean pants.",
+    img:["images/apparels/brownkoreanpant.jpg"],
+    type:"apparel",
+    sizes:["S","M","L","XL"]
+  },
+  "cream-pant": {
+    name:"Cream Korean Pants",
+    price:559,
+    desc:"Elegant cream pants.",
+    img:["images/apparels/creamkoreanpants.jpg"],
+    type:"apparel",
+    sizes:["S","M","L","XL"]
+  },
+  "light-jeans": {
+    name:"Light Blue Jeans",
+    price:559,
+    desc:"Stylish light blue denim jeans.",
+    img:["images/apparels/lightbluejean.jpg"],
+    type:"apparel",
+    sizes:["S","M","L","XL"]
+  },
+  "washed-jeans": {
+    name:"Washed Out Jeans",
+    price:559,
+    desc:"Trendy washed out denim jeans.",
+    img:["images/apparels/washedoutjeans.png"],
+    type:"apparel",
+    sizes:["S","M","L","XL"]
+  },
+  "white-track": {
+    name:"White Bonkers Track",
+    price:699,
+    desc:"Comfortable track pants in white.",
+    img:["images/apparels/whitebonkerstrack.png"],
+    type:"apparel",
+    sizes:["S","M","L","XL"]
+  },
+  "grey-track": {
+    name:"Grey Bonkers Track",
+    price:699,
+    desc:"Comfortable grey track pants.",
+    img:["images/apparels/greybonkerstrack.jpg"],
+    type:"apparel",
+    sizes:["S","M","L","XL"]
+  },
+  "yellow-sundress": {
+    name:"Yellow Sundress",
+    price:799,
+    desc:"Bright yellow sundress.",
+    img:["images/apparels/yellowsundress.jpg"],
+    type:"apparel",
+    sizes:["S","M","L"]
+  },
+  "red-sundress": {
+    name:"Red Sundress",
+    price:799,
+    desc:"Vibrant red sundress.",
+    img:["images/apparels/redsundress.png"],
+    type:"apparel",
+    sizes:["S","M","L"]
+  },
+  "blue-sundress": {
+    name:"Blue Sundress",
+    price:799,
+    desc:"Beautiful blue sundress.",
+    img:["images/apparels/bluesundress.png"],
+    type:"apparel",
+    sizes:["S","M","L"]
+  },
+
+  // Accessories
+  "pandabottle": {
     name:"Panda Bottle",
     price:399,
-    type:"color",
-    images:[
-      "images/accessories/pandabottle4.png",
-      "images/accessories/pandabottle1.png",
-      "images/accessories/pandabottle2.png",
-      "images/accessories/pandabottle3.png",
-      "images/accessories/pandabottle5.png",
-      "images/accessories/pandabottle6.png"
+    desc:"Minimal insulated bottle for everyday use.",
+    img:["images/accessories/pandabottle4.png","images/accessories/pandabottle1.png","images/accessories/pandabottle2.png","images/accessories/pandabottle3.png","images/accessories/pandabottle5.png","images/accessories/pandabottle6.png"],
+    type:"accessory",
+    colors:[
+      {color:"#f6e27a", img:"images/accessories/pandabottle3.png"},
+      {color:"#888", img:"images/accessories/pandabottle1.png"}
     ]
   }
 };
 
-const id=new URLSearchParams(window.location.search).get("id");
-const p=products[id];
-
-document.getElementById("name").innerText=p.name;
-document.getElementById("price").innerText="₹"+p.price;
-
-let selectedSize="M", selectedColor="";
-const imgContainer=document.getElementById("image-container");
-
-if(p.type==="size"){
-  imgContainer.innerHTML=`<img src="${p.img}" class="product-img">`;
-  document.getElementById("options").innerHTML=
-    `<div class="size-options">
-      <div class="size-btn active" onclick="selectSize(this,'S')">S</div>
-      <div class="size-btn" onclick="selectSize(this,'M')">M</div>
-      <div class="size-btn" onclick="selectSize(this,'L')">L</div>
-      <div class="size-btn" onclick="selectSize(this,'XL')">XL</div>
-    </div>`;
+function getParam(name){
+  const urlParams=new URLSearchParams(window.location.search);
+  return urlParams.get(name);
 }
 
-if(p.type==="color"){
-  imgContainer.innerHTML=`
-    <div class="slider">
-      <div class="slide-track" id="track">
-        ${p.images.map(i=>`<img src="${i}">`).join("")}
+function loadProduct(){
+  const id = getParam("id");
+  const p = products[id];
+  if(!p){document.getElementById("productContainer").innerHTML="Product not found"; return;}
+
+  const container=document.getElementById("productContainer");
+
+  // Apparels
+  if(p.type==="apparel"){
+    container.innerHTML = `
+      <img src="${p.img[0]}">
+      <div class="product-name">${p.name}</div>
+      <div class="product-desc">${p.desc}</div>
+      <div class="options">
+        ${p.sizes.map(s=>`<span class="size-option">${s}</span>`).join("")}
       </div>
-      <button class="slide-btn prev" onclick="move(-1)">‹</button>
-      <button class="slide-btn next" onclick="move(1)">›</button>
-    </div>`;
-  document.getElementById("options").innerHTML=
-    `<div class="color-options">
-      <div class="color-box grey" onclick="setColor(1,'Grey')"></div>
-      <div class="color-box yellow" onclick="setColor(3,'Yellow')"></div>
-    </div>`;
+      <button class="add-btn">Add to Cart</button>
+    `;
+  }
+
+  // Accessories
+  if(p.type==="accessory"){
+    container.innerHTML = `
+      <div class="slider-container">
+        <div class="slide-track" id="slideTrack">
+          ${p.img.map(src=>`<img src="${src}">`).join("")}
+        </div>
+        <button class="slide-btn prev" onclick="moveSlide(-1)">‹</button>
+        <button class="slide-btn next" onclick="moveSlide(1)">›</button>
+      </div>
+      <div class="product-name">${p.name}</div>
+      <div class="product-desc">${p.desc}</div>
+      <div class="options">
+        ${p.colors.map(c=>`<div class="color-option" style="background:${c.color}" onclick="changeColor('${c.img}')"></div>`).join("")}
+      </div>
+      <button class="add-btn">Add to Cart</button>
+    `;
+  }
 }
 
-function selectSize(el,size){
-  document.querySelectorAll(".size-btn").forEach(b=>b.classList.remove("active"));
-  el.classList.add("active");
-  selectedSize=size;
+loadProduct();
+
+/* Slider functionality for accessories */
+let currentSlide = 0;
+function moveSlide(dir){
+  const track=document.getElementById("slideTrack");
+  if(!track) return;
+  const total=track.children.length;
+  currentSlide += dir;
+  if(currentSlide<0) currentSlide = total-1;
+  if(currentSlide>=total) currentSlide = 0;
+  track.style.transform=`translateX(-${currentSlide*100}%)`;
 }
 
-let index=0;
-function move(d){
-  const track=document.getElementById("track");
-  index=(index+d+p.images.length)%p.images.length;
-  track.style.transform=`translateX(-${index*100}%)`;
+/* Change color image */
+function changeColor(src){
+  const track=document.getElementById("slideTrack");
+  if(track) track.children[0].src=src; // first image is main
 }
-
-function setColor(i,color){
-  index=i; move(0);
-  selectedColor=color;
-}
-
-function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
-function saveCart(c){localStorage.setItem("cart",JSON.stringify(c));updateCount();}
-function updateCount(){let t=0;getCart().forEach(i=>t+=i.qty);document.getElementById("cart-count").innerText=t;}
-
-document.getElementById("addBtn").onclick=()=>{
-  let cart=getCart();
-  let item=cart.find(x=>x.name===p.name);
-  if(item)item.qty++;
-  else cart.push({name:p.name,price:p.price,img:p.img||p.images[0],qty:1});
-  saveCart(cart);
-
-  const msg=document.getElementById("addedMsg");
-  msg.classList.add("show");
-  setTimeout(()=>msg.classList.remove("show"),900);
-};
-
-updateCount();
 </script>
-
 </body>
 </html>
