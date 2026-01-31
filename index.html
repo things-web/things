@@ -1,33 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Things.in</title>
-  <style>
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;text-align:center}
-    header{display:flex;justify-content:space-between;padding:15px 40px}
-    .logo{text-decoration:none;color:black;font-weight:600;font-size:20px}
-    .cart{text-decoration:none;color:black}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Things.in</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-<header>
-  <a href="index.html" class="logo">Things.in</a>
-  <a href="cart.html" class="cart">🛒 <span id="cart-count">0</span></a>
-</header>
+<nav>
+<a href="index.html" class="logo">Things.in</a>
 
-<h1>Welcome to Things.in</h1>
-<a href="apparels.html">Shop Apparels</a><br><br>
-<a href="accessories.html">Shop Accessories</a>
+<div class="nav-links">
+<a href="apparels.html">Apparels</a>
+<a href="accessories.html">Accessories</a>
+<a href="cart.html" class="cart-icon">
+🛒<span class="cart-count" id="cart-count">0</span>
+</a>
+</div>
+</nav>
 
-<script>
-function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
-function updateCartCount(){
-  let t=0;getCart().forEach(i=>t+=i.qty);
-  document.getElementById("cart-count").innerText=t;
+
+<section class="hero">
+<h1>Minimal. Elegant. Things.</h1>
+</section>
+
+<section class="categories">
+<a href="apparels.html" class="cat-card">Apparels</a>
+<a href="accessories.html" class="cat-card">Accessories</a>
+</section>
+
+  <script>
+const products = {
+
+  pandabottle:{
+    name:"Panda Bottle",
+    price:399,
+    desc:"Cute insulated bottle for everyday use.",
+    type:"accessory",
+    colors:{
+      yellow:"images/accessories/pandabottle3.png",
+      grey:"images/accessories/pandabottle1.png"
+    },
+    gallery:[
+      "images/accessories/pandabottle4.png",
+      "images/accessories/pandabottle1.png",
+      "images/accessories/pandabottle2.png",
+      "images/accessories/pandabottle3.png"
+    ]
+  },
+
+  "anime-tshirt":{name:"Oversized Anime Printed Tshirt",price:449,desc:"Soft oversized streetwear fit.",img:"images/apparels/animetshirt.jpg"},
+  "black-pant":{name:"Black Korean Pants",price:559,desc:"Minimal loose-fit trousers.",img:"images/apparels/blackkoreanpant.jpg"},
+  "brown-pant":{name:"Brown Korean Pants",price:559,desc:"Earth-tone relaxed fit.",img:"images/apparels/brownkoreanpant.jpg"},
+  "cream-pant":{name:"Cream Korean Pants",price:559,desc:"Light neutral everyday pants.",img:"images/apparels/creamkoreanpants.jpg"},
+  "light-jeans":{name:"Light Blue Jeans",price:559,desc:"Classic washed denim.",img:"images/apparels/lightbluejean.jpg"},
+  "washed-jeans":{name:"Washed Out Jeans",price:559,desc:"Vintage faded denim look.",img:"images/apparels/washedoutjeans.png"},
+  "white-track":{name:"White Bonkers Track",price:699,desc:"Premium comfy track pants.",img:"images/apparels/whitebonkerstrack.png"},
+  "grey-track":{name:"Grey Bonkers Track",price:699,desc:"Athleisure everyday track.",img:"images/apparels/greybonkerstrack.jpg"},
+  "yellow-sundress":{name:"Yellow Sundress",price:799,desc:"Bright summer dress.",img:"images/apparels/yellowsundress.jpg"},
+  "red-sundress":{name:"Red Sundress",price:799,desc:"Elegant vibrant dress.",img:"images/apparels/redsundress.png"},
+  "blue-sundress":{name:"Blue Sundress",price:799,desc:"Soft flowy sundress.",img:"images/apparels/bluesundress.png"}
+};
+
+let selectedSize=null;
+let selectedColor="yellow";
+let currentIndex=0;
+
+const id=new URLSearchParams(window.location.search).get("id");
+const p=products[id];
+const container=document.getElementById("product-container");
+
+if(!p){
+  container.innerHTML="<h2>Product not found</h2>";
 }
-document.addEventListener("DOMContentLoaded",updateCartCount);
+else{
+
+  let mainImg=p.img || p.gallery[0];
+
+  let html=`
+  <div style="position:relative;display:flex;justify-content:center;">
+    <button onclick="prevImg()" style="position:absolute;left:10px;top:45%;font-size:28px;background:white;border-radius:50%;border:none;cursor:pointer;">‹</button>
+    <img id="mainImg" src="${mainImg}" style="max-width:320px;">
+    <button onclick="nextImg()" style="position:absolute;right:10px;top:45%;font-size:28px;background:white;border-radius:50%;border:none;cursor:pointer;">›</button>
+  </div>
+
+  <div class="product-name">${p.name}</div>
+  <div class="product-desc">${p.desc}</div>
+  <div class="price">₹${p.price}</div>
+  `;
+
+  /* COLOR BLOCKS */
+  if(p.type==="accessory"){
+    html+=`
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:10px;">
+      <div onclick="selectColor('yellow')" style="width:18px;height:18px;background:#FFD84D;border:1px solid #000;cursor:pointer;"></div>
+      <div onclick="selectColor('grey')" style="width:18px;height:18px;background:#777;border:1px solid #000;cursor:pointer;"></div>
+    </div>`;
+  }
+
+  /* SIZE FOR APPARELS */
+  if(!p.type){
+    html+=`
+    <div class="size-select">
+      <div class="size-btn" onclick="selectSize(this,'S')">S</div>
+      <div class="size-btn" onclick="selectSize(this,'M')">M</div>
+      <div class="size-btn" onclick="selectSize(this,'L')">L</div>
+    </div>`;
+  }
+
+  html+=`
+  <button class="add-cart-btn" onclick="addToCart()">Add to Cart</button>
+  <div id="addedMsg" style="opacity:0;font-size:13px;margin-top:6px;">Added ✓</div>
+  `;
+
+  container.innerHTML=html;
+}
+
+/* IMAGE SLIDER */
+function prevImg(){
+  if(!p.gallery)return;
+  currentIndex=(currentIndex-1+p.gallery.length)%p.gallery.length;
+  document.getElementById("mainImg").src=p.gallery[currentIndex];
+}
+function nextImg(){
+  if(!p.gallery)return;
+  currentIndex=(currentIndex+1)%p.gallery.length;
+  document.getElementById("mainImg").src=p.gallery[currentIndex];
+}
+
+/* COLOR SWITCH */
+function selectColor(color){
+  selectedColor=color;
+  document.getElementById("mainImg").src=p.colors[color];
+}
+
+/* SIZE */
+function selectSize(el,size){
+  selectedSize=size;
+  document.querySelectorAll(".size-btn").forEach(b=>b.style.background="white");
+  el.style.background="#0a1f44";
+  el.style.color="white";
+}
+
+/* CART */
+function getCart(){return JSON.parse(localStorage.getItem("cart"))||[];}
+function saveCart(c){localStorage.setItem("cart",JSON.stringify(c));updateCount();}
+function updateCount(){let t=0;getCart().forEach(i=>t+=i.qty);document.getElementById("cart-count").innerText=t;}
+
+function showAdded(){
+  const m=document.getElementById("addedMsg");
+  m.style.opacity="1";
+  setTimeout(()=>m.style.opacity="0",900);
+}
+
+function addToCart(){
+  if(!p.type && !selectedSize){alert("Select size");return;}
+
+  let img=p.type==="accessory"?p.colors[selectedColor]:p.img;
+  let name=p.name+(selectedSize?` (${selectedSize})`:"");
+
+  let c=getCart();
+  let it=c.find(i=>i.name===name);
+  if(it)it.qty++;
+  else c.push({name,price:p.price,img,qty:1});
+
+  saveCart(c);
+  showAdded();
+}
+
+updateCount();
 </script>
+
 
 </body>
 </html>
