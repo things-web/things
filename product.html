@@ -96,7 +96,7 @@ const products = {
 };
 
 let selectedSize=null;
-let selectedColor="yellow";
+let selectedColor=null; // initially null so user must pick color
 let currentIndex=0;
 
 const id=new URLSearchParams(window.location.search).get("id");
@@ -177,10 +177,19 @@ function showAdded(){
 }
 
 function addToCart(){
-  if(!p.type && !selectedSize){alert("Select size");return;}
+  // size must be selected for apparels, color must be selected for accessories
+  if(!p.type && !selectedSize){
+    alert("Select size");
+    return;
+  }
+  if(p.type==="accessory" && !selectedColor){
+    alert("Select color");
+    return;
+  }
+
   let img = p.type==="accessory" ? p.colors[selectedColor] : p.img;
 
-  // ✅ include color for accessories, size for apparels
+  // include color for accessories, size for apparels
   let name = p.type==="accessory" ? `${p.name} (${selectedColor})` : (selectedSize ? `${p.name} (${selectedSize})` : p.name);
 
   let c=getCart();
@@ -195,105 +204,3 @@ updateCount();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
