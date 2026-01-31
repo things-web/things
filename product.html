@@ -53,11 +53,12 @@
 </head>
 <body>
 
+<!-- NAVIGATION -->
 <nav>
-  <div class="logo"><a href="index.html" style="text-decoration:none;color:#0a1f44;">Things.in</a></div>
+  <div class="logo">
+    <a href="index.html" style="text-decoration:none;color:#0a1f44;">Things.in</a>
+  </div>
   <div class="nav-links">
-    <a href="apparels.html">Apparels</a>
-    <a href="accessories.html">Accessories</a>
     <a href="cart.html" class="cart-icon">🛒<span id="cart-count" class="cart-count">0</span></a>
   </div>
 </nav>
@@ -96,7 +97,7 @@ const products = {
 };
 
 let selectedSize=null;
-let selectedColor=null; // initially null so user must pick color
+let selectedColor=null;
 let currentIndex=0;
 
 const id=new URLSearchParams(window.location.search).get("id");
@@ -116,7 +117,6 @@ if(!p){
   <div class="product-desc">${p.desc}</div>
   <div class="price">₹${p.price}</div>`;
 
-  /* COLOR BLOCKS */
   if(p.type==="accessory"){
     html+=`<div style="display:flex;gap:12px;justify-content:center;margin-top:10px;">
       <div onclick="selectColor('yellow')" style="width:18px;height:18px;background:#FFD84D;border:1px solid #000;cursor:pointer;"></div>
@@ -124,7 +124,6 @@ if(!p){
     </div>`;
   }
 
-  /* SIZE FOR APPARELS */
   if(!p.type){
     html+=`<div class="size-select">
       <div class="size-btn" onclick="selectSize(this,'S')">S</div>
@@ -177,7 +176,6 @@ function showAdded(){
 }
 
 function addToCart(){
-  // size must be selected for apparels, color must be selected for accessories
   if(!p.type && !selectedSize){
     alert("Select size");
     return;
@@ -188,8 +186,6 @@ function addToCart(){
   }
 
   let img = p.type==="accessory" ? p.colors[selectedColor] : p.img;
-
-  // include color for accessories, size for apparels
   let name = p.type==="accessory" ? `${p.name} (${selectedColor})` : (selectedSize ? `${p.name} (${selectedSize})` : p.name);
 
   let c=getCart();
@@ -202,5 +198,6 @@ function addToCart(){
 
 updateCount();
 </script>
+
 </body>
 </html>
