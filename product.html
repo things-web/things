@@ -170,11 +170,25 @@ function selectColor(color){
 
 /* SIZE */
 function selectSize(el,size){
+
+  // if clicking same size again → unselect
+  if(selectedSize===size){
+    selectedSize=null;
+
+    document.querySelectorAll(".size-btn").forEach(b=>{
+      b.style.background="white";
+      b.style.color="#0a1f44";
+    });
+
+    return;
+  }
+
+  // normal select
   selectedSize=size;
 
   document.querySelectorAll(".size-btn").forEach(b=>{
     b.style.background="white";
-    b.style.color="#0a1f44";   // ← reset text color
+    b.style.color="#0a1f44";
   });
 
   el.style.background="#0a1f44";
