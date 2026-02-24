@@ -127,9 +127,8 @@ if(!p){
   if(p.type==="accessory"){
     html+=`
     <div style="display:flex;gap:12px;justify-content:center;margin-top:10px;">
-      <div onclick="selectColor('yellow')" style="width:18px;height:18px;background:#FFD84D;border:1px solid #000;cursor:pointer;"></div>
-      <div onclick="selectColor('grey')" style="width:18px;height:18px;background:#777;border:1px solid #000;cursor:pointer;"></div>
-    </div>`;
+      <div class="color-box" data-color="yellow" onclick="selectColor(this,'yellow')" style="background:#FFD84D;"></div>
+      <div class="color-box" data-color="grey" onclick="selectColor(this,'grey')" style="background:#777;"></div>    </div>`;
   }
 
   /* SIZE FOR APPARELS */
